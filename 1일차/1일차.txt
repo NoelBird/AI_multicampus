@@ -1,0 +1,20 @@
+TCP/IP 구성 
+
+   자동 구성 : DHCP Server로 부터 할당 받는 구성
+   수동 구성 : 직접 셋팅하는 구성 (고정 IP)
+	IP
+	Subnet Mask
+	Gateway
+	DNS
+
+MS 계정 생성
+
+  www.microsoft.com
+
+가상화 구현 
+
+  -Type 1 가상화  (실제 서비스), MS - Hyper-V,  VMware vSphere, Xen, KVM
+	CPU : 가상화 지원, RAM (DEP 지원)
+
+  -Type 2 가상화 ( 테스트 , 개발 ), Oracle VirtualBox, VMware Player
+
