@@ -1,2 +1,5 @@
 # msazure
-ms azure fundamentals
+ms azure 강의 수업 내용 정리
+
+## 수강 기간: 2019-04-24 ~ (총 7개월)
+
