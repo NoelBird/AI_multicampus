@@ -1,0 +1,40 @@
+4일차  Azure Network 
+	10979-Module 5,  20533-Module 2
+
+DNS 이름 풀이 과정
+
+  1. DNS Cache
+	C:\Windows\system32\drivers\etc\hosts
+
+	ipconfig /displaydns	<== DNS Cache 확인
+	ipconfig /flushdns		<== DNS Cache 삭제
+  2. Local DNS
+
+
+www.doregi.com
+
+
+Zone : DNS DataBase (multicampus.co.kr)
+
+ 레코드 <== Zone내에서 일을 하는 리소스
+
+   A		: 호스트 이름을 IP 로 변환
+   CNAME		: 호스트 이름을 다른 호스트 이름으로 변환
+   MX		: 메일 서버를 지정
+   SRV		: 서비스의 위치를 지정
+
+
+https://github.com/MicrosoftLearning/10979-Introduction-to-Azure-for-IT-Professionals
+
+    
+
+
+
+
+
+
+
+
+
+
+

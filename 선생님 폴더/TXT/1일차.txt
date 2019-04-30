@@ -1,0 +1,86 @@
+net use v: \\70.12.113.130\share /user:a a
+
+ncpa.cpl
+
+TCP/IP 구성 (ipconfig /all)
+
+   자동 구성 : DHCP Server로 부터 할당 받는 구성
+   수동 구성 : 직접 셋팅하는 구성 (고정 IP)
+	IP
+	Subnet Mask
+	Gateway
+	DNS
+
+Host : 네트워크의 장치. (컴퓨터, 프린터, 라우터, 스위치)
+
+
+
+MS 계정 생성
+
+  www.microsoft.com
+
+가상화 구현 
+
+  -Type 1 가상화  (실제 서비스), MS - Hyper-V,  VMware vSphere, Xen, KVM
+	CPU : 가상화 지원, RAM (DEP 지원)
+
+  -Type 2 가상화 ( 테스트 , 개발 ), Oracle VirtualBox, VMware Player
+
+
+VM (Virtual Machine) : Hyper-V 에 설치된 OS
+	1. WS2019
+	2. CentOS 
+
+Host OS : 실체 H/W 에 설치된 OS
+Gust OS : VM
+
+1세대 VM : 바이오스, E-IDE (0:0) <==OS, 32bit, 64bit
+2세대 VM : 펌웨어, SCSI <==OS, 64bit Only
+
+
+가상 하드 파일  
+	vhd	:  2008에서 지원<== Azure
+	vhdx	:  2012, vhd보다 30% 성능 빠름.
+
+www.centos.org
+	RedHat Enterprise Edtion의 무료버젼
+
+
+
+www.google.co.kr
+
+http://e-ncs.kr
+
+
+니콜라스카 , 2003 
+
+ - IT 는 중요하지 않다. 
+
+www.sysinternals.com
+	<== 
+
+암호 복잡성 요구 : 
+   대문자, 소문자, 특수문자, 숫자 중 3가지가 조합된 암호 (Domain 환경)
+	Pa55w.rd
+
+potal.azure.com	<== Azure 관리 포털
+
+
+원격관리 
+   -Windows : 원격 데스크톱 연결 (TCP 3389) <=GUI
+   -Linux      : SSH (TCP 22)		        <=TUI
+
+
+https://azure.microsoft.com/ko-kr/global-infrastructure/
+
+
+
+
+
+
+
+
+
+
+
+

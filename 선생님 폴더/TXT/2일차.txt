@@ -1,0 +1,56 @@
+portal.azure.com	<== Azure Portal (관리 포털)
+
+
+
+
+azure.microsoft.com  <== 
+
+
+
+
+
+
+
+가격 계산기 
+	https://azure.microsoft.com/ko-kr/pricing/
+
+설명서 
+	https://docs.microsoft.com/ko-kr/azure/
+
+
+
+실습 LAB URL
+20979F
+https://github.com/MicrosoftLearning/10979-Introduction-to-Azure-for-IT-Professionals
+
+20533E
+https://github.com/MicrosoftLearning/20533-ImplementingMicrosoftAzureInfrastructureSolutions/tree/master/Instructions
+
+
+가상 디스크 타입 
+
+-고정 디스크	: 80GB로 만들 경우 80GB 
+-동적 확장 	: 80GB로 만들 경우 4MB ---> 80GB
+-차이점 보관용         : Base 에서 변경된 내용만 저장
+
+DNS  
+    - 이름 풀이 서비스 ( FQDN(전체컴퓨터이름) ==> IP Address)    	<114>
+	호스트이름+도메인 이름 
+	www.naver.com	==> 125.209.222.141
+	vm2016pjw01.eastus.cloudapp.azure.com    ==> 40.117.90.198
+		
+    - 서비스의 위치를 알려 주는 서비스 (SRV 레코드)		<네비게이션>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

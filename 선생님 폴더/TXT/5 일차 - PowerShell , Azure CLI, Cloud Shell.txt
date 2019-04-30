@@ -1,0 +1,65 @@
+
+PowerShell 설치
+https://azure.microsoft.com/en-us/downloads/
+
+=====Az 모듈 설치 ==========
+정보 URL : https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-1.8.0&viewFallbackFrom=azps-1.2.0
+Install-Module -Name Az -AllowClobber	# Az 모듈 설치
+Set-ExecutionPolicy Unrestricted		# 실행 정책 허용
+import-module Az.Accounts			# 모듈 등록
+
+Connect-AzAccount
+Get-AzSubscription
+Select-AzSubscription -Subscription <Subscription ID> 
+
+====AzureRM 모듈 설치==================
+정보 URL : https://docs.microsoft.com/ko-kr/powershell/azure/azurerm/install-azurerm-ps?view=azurermps-6.13.0
+Install-Module -Name AzureRM -AllowClobber
+Import-Module AzureRM
+
+Connect-AzureRMAccount
+Get-AzureRMSubscription
+Select-AzureRMSubscription -Subscription <Subscription ID> 
+
+
+======================
+
+Azure CLI 설치 
+https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest 
+azure-cli-2.0.63.msi  <== 설치 
+
+az
+az login
+az account list		<== Subscription 출력
+az account set --subscription <value of the subscription id property>
+
+
+
+
+
+
+Github
+https://github.com/MicrosoftLearning/10979-Introduction-to-Azure-for-IT-Professionals/blob/master/Instructions/10979F_LAB_AK_02.md
+
+==============
+Get-Command 
+Get-Process 
+Get-Help Get-Process # Power Shell 주석
+$env:PSModulePath
+
+Install-Module -Name Az -AllowClobber	1. Azure Module 설치
+
+import-module Az.Accounts			2. Azure Module 등록
+
+Connect-AzAccount
+
+Get-ExecutionPolicy # PowerShell 스크립트 실행 정책 
+    # Rescricted  : 제한됨 (*.ps1 파일)
+    # Unrestricted : 실행 (보안상 위험)
+
+Set-ExecutionPolicy Unrestricted
+
+
+
+===========
+
