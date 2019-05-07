@@ -11,6 +11,7 @@ Overview
 - [6일차 - SQL](6일차/2019-04-30.md)
 - [7일차 - Web App, Traffic manager](7일차/2019-05-02.md)
 - [8일차 - Azure AD](8일차/2019-05-03.md)
+- [9일차 - Container & Serverless](9일차/2019-05-07.md)
 
 ## 수강 기간: 2019-04-24 ~ (총 7개월)
 
