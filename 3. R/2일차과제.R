@@ -1,4 +1,3 @@
-
 # 1
 ########################## 패키지 인스톨 & 로딩 시작#############################
 # 설치 여부 확인 후 로딩합니다.
@@ -9,33 +8,30 @@ for(pkg_name in pkg_names){
   }
   library(pkg_name, character.only=TRUE)
 }
+mpgCpy<-mpg
 ########################## 패키지 인스톨 & 로딩 끝#############################
 
 ########################## 문제 풀이 시작#############################
 # 1-1
-mpg_cpy<-mpg
-
+mpgCpy<-mpgCpy %>% 
+  mutate(totMPG=cty+hwy)
 # 1-2
-mpg_cpy<-mpg_cpy %>% 
-  mutate(tot_y=cty+hwy)
+mpgCpy<-mpgCpy %>% 
+  mutate(meanMPG=totMPG/2)
 
 # 1-3
-str(mpg_cpy)
-View(mpg_cpy %>% 
-  arrange(tot_y) %>%
-  select(manufacturer,model,tot_y) %>% 
-  head(3))
-
-# manufacturer / model / tot_y
-# 1	dodge	dakota pickup 4wd	21
-# 2	dodge	durango 4wd	21
-# 3	dodge	ram 1500 pickup 4wd	21
+mpgCpy %>% 
+  group_by(class) %>% 
+  summarise(meanMPGPerClass=mean(meanMPG)) %>% 
+  arrange(desc(meanMPGPerClass)) %>% 
+  head(3)
 
 # 1-4
 mpg %>% 
-  mutate(tot_y=cty+hwy) %>% 
-  arrange(tot_y) %>%
-  select(manufacturer,model,tot_y) %>% 
+  mutate(totMPG=cty+hwy, meanMPG=totMPG/2) %>% 
+  group_by(class) %>% 
+  summarise(meanMPGPerClass=mean(meanMPG)) %>% 
+  arrange(desc(meanMPGPerClass)) %>% 
   head(3)
 
 # 1-5
@@ -60,8 +56,8 @@ mpg %>%
 mpg %>% 
   group_by(manufacturer) %>% 
   filter(class=="compact") %>% 
-  count() %>% 
-  arrange(desc(n))
+  summarise(count=n()) %>% 
+  arrange(desc(count))
 ########################## 문제 풀이 끝#############################
 
 
