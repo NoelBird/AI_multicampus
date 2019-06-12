@@ -1,6 +1,5 @@
 from tkinter import *
 
-from tkinter import *
 from tkinter import messagebox
 from tkinter.simpledialog import * # 입력받기. askinteger
 from tkinter.filedialog import * # file dialog
