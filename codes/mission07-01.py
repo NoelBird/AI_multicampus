@@ -298,6 +298,32 @@ def  zoomInImage2() :
     displayImage()
 
 # 영상 회전 알고리즘
+def  rotateImage2() :
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+    angle = askinteger("회전", "값-->", minvalue=1, maxvalue=360)
+    ## 중요! 코드. 출력영상 크기 결정 ##
+    outH = inH;  outW = inW;
+    ###### 메모리 할당 ################
+    outImage = [];    outImage = malloc(outH, outW)
+    ####### 진짜 컴퓨터 비전 알고리즘 #####
+    radian = angle * math.pi / 180
+    cx = inW // 2
+    cy = inH // 2
+    for i in range(outH):
+        for k in range(outW):
+            xs = i;
+            ys = k;
+            xd = int(math.cos(radian) * (xs - cx) - math.sin(radian) * (ys - cy))
+            yd = int(math.sin(radian) * (xs - cx) + math.cos(radian) * (ys - cy))
+            if 0 <= xd < outH and 0 <= yd < outW:
+                outImage[xs][ys] = inImage[xd][yd]
+            else:
+                outImage[xs][ys] = 255
+
+
+
+
+# 영상 회전 알고리즘 - 중심, 역방향
 def  rotateImage() :
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
     angle = askinteger("회전", "값-->", minvalue=1, maxvalue=360)
@@ -307,12 +333,14 @@ def  rotateImage() :
     outImage = [];    outImage = malloc(outH, outW)
     ####### 진짜 컴퓨터 비전 알고리즘 #####
     radian = angle * math.pi / 180
-    for i in range(inH) :
-        for k in range(inW) :
+    cx = inW//2
+    cy = inH//2
+    for i in range(outH) :
+        for k in range(outW) :
             xs = i ; ys = k;
-            xd = int(math.cos(radian) * xs - math.sin(radian) * ys)
-            yd = int(math.sin(radian) * xs + math.cos(radian) * ys)
-            if 0<= xd < inH and 0 <= yd < inW :
+            xd = int(math.cos(radian) * (xs-cx) - math.sin(radian) * (ys-cy))
+            yd = int(math.sin(radian) * (xs-cx) + math.cos(radian) * (ys-cy))
+            if 0<= xd < outH and 0 <= yd < outW:
                 outImage[xd][yd] = inImage[i][k]
 
     displayImage()
@@ -733,6 +761,44 @@ def  sharpImage() :
 
     displayImage()
 
+
+def  morphImage() :
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+    ## 중요! 코드. 출력영상 크기 결정 ##
+    outH = inH;  outW = inW;
+    ## 추가 영상 선택
+    filename2 = askopenfilename(parent=window,
+                               filetypes=(("RAW 파일", "*.raw"), ("모든 파일", "*.*")))
+    if filename2 == '' or filename2 == None:
+        return
+
+    fsize = os.path.getsize(filename2)  # 파일의 크기(바이트)
+    inH2 = inW2 = int(math.sqrt(fsize))  # 핵심 코드
+    ## 입력영상 메모리 확보 ##
+    inImage2 = []
+    inImage2 = malloc(inH2, inW2)
+    # 파일 --> 메모리
+    with open(filename2, 'rb') as rFp:
+        for i in range(inH2):
+            for k in range(inW2):
+                inImage2[i][k] = int(ord(rFp.read(1)))
+    ###### 메모리 할당 ################
+    outImage2 = [];    outImage2 = malloc(outH, outW)
+    ####### 진짜 컴퓨터 비전 알고리즘 #####
+    w1 = askinteger("원영상 가중치", "가중치(%)-->", minvalue=0, maxvalue=100)
+    w2 = 1-(w1/100)
+    w1 = 1 - w2
+    for i in range(inH2) :
+        for k in range(inW2) :
+            newValue = int(inImage[i][k]*w1 + inImage2[i][k]*w2)
+            if newValue > 255:
+                newValue = 255
+            elif newValue < 0:
+                newValue = 0
+            outImage[i][k] = newValue
+
+    displayImage()
+
 # comVisionMenu4.add_command(label="저주파", command=LowFreqImage)
 # comVisionMenu4.add_command(label="에지 검출", command=detectEdgeImage)
 ####################
@@ -767,6 +833,8 @@ mainMenu.add_cascade(label="화소점 처리", menu=comVisionMenu1)
 comVisionMenu1.add_command(label="덧셈/뺄셈", command=addImage)
 comVisionMenu1.add_command(label="반전하기", command=revImage)
 comVisionMenu1.add_command(label="파라볼라", command=paraImage)
+comVisionMenu1.add_separator()
+comVisionMenu1.add_command(label="모핑", command=morphImage)
 
 comVisionMenu2 = Menu(mainMenu)
 mainMenu.add_cascade(label="통계", menu=comVisionMenu2)
@@ -786,6 +854,7 @@ comVisionMenu3.add_command(label="이동", command=moveImage)
 comVisionMenu3.add_command(label="축소", command=zoomOutImage)
 comVisionMenu3.add_command(label="확대", command=zoomInImage)
 comVisionMenu3.add_command(label="회전", command=rotateImage)
+comVisionMenu3.add_command(label="회전(중심방향, ", command=rotateImage)
 
 comVisionMenu4 = Menu(mainMenu)
 mainMenu.add_cascade(label="화소영역 처리", menu=comVisionMenu4)
