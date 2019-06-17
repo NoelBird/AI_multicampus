@@ -28,7 +28,7 @@ def loadImage(fname) :
     inImage=[]
     inImage=malloc(inH,inW)
     # 파일 --> 메모리
-    with open(filename, 'rb') as rFp:
+    with open(fname, 'rb') as rFp:
         for i in range(inH) :
             for k in range(inW) :
                 inImage[i][k] = int(ord(rFp.read(1)))
@@ -68,6 +68,8 @@ def displayImage() :
         VIEW_Y = outH
         step = 1
     else :
+        VIEW_X = 512
+        VIEW_Y = 512
         step = outW / VIEW_X
 
     window.geometry(str(int(VIEW_Y*1.2)) + 'x' + str(int(VIEW_X*1.2)))  # 벽
@@ -672,9 +674,50 @@ def saveMysql() :
 
 def loadMysql() :
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    con = pymysql.connect(host)
-    pass
+    con = pymysql.connect(host=IP_ADDR, user=USER_NAME, password=USER_PASS,
+                          db=DB_NAME, charset=CHAR_SET)
+    cur = con.cursor()
+    sql = "SELECT raw_id, raw_fname, raw_extname, raw_height, raw_width "
+    sql += "FROM rawImage_TBL"
+    cur.execute(sql)
 
+    queryList = cur.fetchall()
+    rowList = [ ':'.join(map(str,row)) for row in queryList]
+    import tempfile
+    def selectRecord( ) :
+        global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+        selIndex = listbox.curselection()[0]
+        subWindow.destroy()
+        raw_id = queryList[selIndex][0]
+        sql = "SELECT raw_fname, raw_extname, raw_data FROM rawImage_TBL "
+        sql += "WHERE raw_id = " + str(raw_id)
+        cur.execute(sql)
+        fname, extname, binData = cur.fetchone()
+
+        fullPath = tempfile.gettempdir() + '/' + fname + "." + extname
+        with open(fullPath, 'wb') as wfp:
+            wfp.write(binData)
+        cur.close()
+        con.close()
+
+        loadImage(fullPath)
+        equalImage()
+
+    ## 서브 윈도에 목록 출력하기.
+    subWindow = Toplevel(window)
+    listbox = Listbox(subWindow)
+    button = Button(subWindow, text='선택', command = selectRecord)
+
+    for rowStr in rowList :
+        listbox.insert(END, rowStr)
+
+    listbox.pack(expand=1, anchor=CENTER)
+    button.pack()
+    subWindow.mainloop()
+
+
+    cur.close()
+    con.close()
 
 ####################
 #### 전역변수 선언부 ####
@@ -690,7 +733,7 @@ VIEW_X, VIEW_Y = 512, 512 # 화면에 보일 크기 (출력용)
 ####################
 window = Tk()
 window.geometry("500x500")
-window.title("컴퓨터 비전(딥러닝 기법) ver 0.03")
+window.title("컴퓨터 비전(딥러닝 기법) ver 0.04")
 
 status = Label(window, text='이미지 정보:', bd=1, relief=SUNKEN, anchor=W)
 status.pack(side=BOTTOM, fill=X)

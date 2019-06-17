@@ -5,11 +5,12 @@ import math
 import os
 import os.path
 
+
 ####################
 #### 함수 선언부 ####
 ####################
 # 메모리를 할당해서 리스트(참조)를 반환하는 함수
-def malloc(h, w, initValue=0) :
+def malloc(h, w, initValue=0):
     retMemory= []
     for _ in range(h) :
         tmpList = []
@@ -48,7 +49,6 @@ def saveImage() :
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
     saveFp = asksaveasfile(parent=window, mode='wb',
         defaultextension='*.raw', filetypes=(("RAW 파일", "*.raw"), ("모든 파일", "*.*")))
-    print(saveFp, type(saveFp))
     if saveFp == '' or saveFp == None :
         return
     for i in range(outH) :
@@ -61,19 +61,19 @@ def displayImage() :
     global VIEW_X, VIEW_Y
     if canvas != None : # 예전에 실행한 적이 있다.
         canvas.destroy()
-
     ## 고정된 화면 크기
-    if outH <= VIEW_Y or outW <= VIEW_X :
+    if outH <= VIEW_Y or outW <= VIEW_X:
         VIEW_X = outW
         VIEW_Y = outH
         step = 1
-    else :
+    else:
         step = outW / VIEW_X
-
-    window.geometry(str(int(VIEW_Y*1.2)) + 'x' + str(int(VIEW_X*1.2)))  # 벽
-    canvas = Canvas(window, height=VIEW_Y, width=VIEW_X)
-    paper = PhotoImage(height=VIEW_Y, width=VIEW_X)
+    window.geometry(str(int(VIEW_Y*1.2)) + 'x' + str(int(VIEW_X*1.2))) # 벽
+    canvas = Canvas(window, height=VIEW_Y, width=VIEW_X)  # 보드
+    paper = PhotoImage(height=VIEW_Y, width=VIEW_X)  # 빈 종이
     canvas.create_image((VIEW_Y // 2, VIEW_X // 2), image=paper, state='normal')
+
+
 
 
     ## 화면 크기를 조절
@@ -81,7 +81,7 @@ def displayImage() :
     # canvas = Canvas(window, height=outH, width=outW) # 보드
     # paper = PhotoImage(height=outH, width=outW) # 빈 종이
     # canvas.create_image((outH//2, outW//2), image=paper, state='normal')
-    # ## 출력영상 --> 화면에 한점씩 찍자.
+    ## 출력영상 --> 화면에 한점씩 찍자.
     # for i in range(outH) :
     #     for k in range(outW) :
     #         r = g = b = outImage[i][k]
@@ -89,9 +89,9 @@ def displayImage() :
     ## 성능 개선
     import numpy
     rgbStr = '' # 전체 픽셀의 문자열을 저장
-    for i in numpy.arange(0,outH, step) :
+    for i in numpy.arange(0, outH, step):
         tmpStr = ''
-        for k in numpy.arange(0,outW, step) :
+        for k in numpy.arange(0, outW, step):
             i = int(i); k = int(k)
             r = g = b = outImage[i][k]
             tmpStr += ' #%02x%02x%02x' % (r,g,b)
@@ -102,6 +102,7 @@ def displayImage() :
     canvas.bind('<ButtonRelease-1>', mouseDrop)
     canvas.pack(expand=1, anchor=CENTER)
     status.configure(text='이미지 정보:' + str(outW) + 'x' + str(outH))
+
 
 ###############################################
 ##### 컴퓨터 비전(영상처리) 알고리즘 함수 모음 #####
@@ -317,8 +318,9 @@ def  zoomInImage2() :
 
     displayImage()
 
+
 # 영상 회전 알고리즘
-def  rotateImage() :
+def rotateImage():
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
     angle = askinteger("회전", "값-->", minvalue=1, maxvalue=360)
     ## 중요! 코드. 출력영상 크기 결정 ##
@@ -337,8 +339,9 @@ def  rotateImage() :
 
     displayImage()
 
+
 # 영상 회전 알고리즘 - 중심, 역방향
-def  rotateImage2() :
+def rotateImage2():
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
     angle = askinteger("회전", "값-->", minvalue=1, maxvalue=360)
     ## 중요! 코드. 출력영상 크기 결정 ##
@@ -359,9 +362,11 @@ def  rotateImage2() :
                 outImage[xs][ys] = 255
 
     displayImage()
+
+
 # 히스토그램
 import matplotlib.pyplot as plt
-def  histoImage() :
+def histoImage():
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
     inCountList = [0] * 256
     outCountList = [0] * 256
@@ -378,30 +383,36 @@ def  histoImage() :
     plt.plot(outCountList)
     plt.show()
 
+
 def  histoImage2() :
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
     outCountList = [0] * 256
     normalCountList = [0] * 256
+
     # 빈도수 계산
     for i in range(outH) :
         for k in range(outW) :
             outCountList[outImage[i][k]] += 1
-    maxVal = max(outCountList); minVal = min(outCountList)
-    High = 256
+
     # 정규화 = (카운트값 - 최소값) * High / (최대값 - 최소값)
-    for i in range(len(outCountList)) :
-        normalCountList[i] = (outCountList[i] - minVal) * High  / (maxVal-minVal)
-    ## 서브 윈도창 생성 후 출력
+    maxVal = max(outCountList)
+    minVal = min(outCountList)
+    high = 256
+
+    for i in range(len(outCountList)):
+        normalCountList[i] = (outCountList[i] - minVal)*high / (maxVal - minVal)
+
+    ## 서브 윈도우 생성 후 출력
     subWindow = Toplevel(window)
     subWindow.geometry('256x256')
     subCanvas = Canvas(subWindow, width=256, height=256)
     subPaper = PhotoImage(width=256, height=256)
     subCanvas.create_image((256//2, 256//2), image=subPaper, state='normal')
 
-    for i in range(len(normalCountList)) :
-        for k in range(int(normalCountList[i])) :
-            data= 0
-            subPaper.put('#%02x%02x%02x' % (data, data, data), (i, 255-k))
+    for i in range(len(normalCountList)):
+        for k in range(int(normalCountList[i])):
+            data = 0
+            subPaper.put("#%02x%02x%02x" % ( data, data, data), (i, 255-k))
     subCanvas.pack(expand=1, anchor=CENTER)
     subWindow.mainloop()
 
@@ -579,102 +590,6 @@ def  morphImage() :
 
     threading.Thread(target=morpFunc).start()
 
-## 임시 경로에 outImage를 저장하기.
-import random
-def saveTempImage() :
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    import tempfile
-    saveFp = tempfile.gettempdir() + "/" + str(random.randint(10000, 99999)) + ".raw"
-    if saveFp == '' or saveFp == None :
-        return
-    print(saveFp)
-    saveFp = open(saveFp, mode='wb')
-    for i in range(outH) :
-        for k in range(outW) :
-            saveFp.write(struct.pack('B', outImage[i][k]))
-    saveFp.close()
-    return saveFp
-
-def findStat(fname) :
-    # 파일 열고, 읽기.
-    fsize = os.path.getsize(fname) # 파일의 크기(바이트)
-    inH = inW = int(math.sqrt(fsize)) # 핵심 코드
-    ## 입력영상 메모리 확보 ##
-    inImage=[]
-    inImage=malloc(inH,inW)
-    # 파일 --> 메모리
-    with open(fname, 'rb') as rFp:
-        for i in range(inH) :
-            for k in range(inW) :
-                inImage[i][k] = int(ord(rFp.read(1)))
-    sum = 0
-    for i in range(inH) :
-        for k in range(inW) :
-            sum += inImage[i][k]
-    avg = sum // (inW * inH)
-    maxVal = minVal = inImage[0][0]
-    for i in range(inH):
-        for k in range(inW):
-            if inImage[i][k] < minVal:
-                minVal = inImage[i][k]
-            elif inImage[i][k] > maxVal:
-                maxVal = inImage[i][k]
-    return avg, maxVal, minVal
-
-import pymysql
-IP_ADDR = '192.168.56.106'; USER_NAME = 'root'; USER_PASS = '1234'
-DB_NAME = 'BigData_DB'; CHAR_SET = 'utf8'
-def saveMysql() :
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    con = pymysql.connect(host=IP_ADDR, user=USER_NAME, password=USER_PASS,
-                          db=DB_NAME, charset=CHAR_SET)
-    cur = con.cursor()
-
-    try:
-        sql = '''
-                CREATE TABLE rawImage_TBL (
-                raw_id INT AUTO_INCREMENT PRIMARY KEY,
-                raw_fname VARCHAR(30),
-                raw_extname CHAR(5),
-                raw_height SMALLINT, raw_width SMALLINT,
-                raw_avg  TINYINT UNSIGNED , 
-                raw_max  TINYINT UNSIGNED,  raw_min  TINYINT UNSIGNED,
-                raw_data LONGBLOB);
-            '''
-        cur.execute(sql)
-    except:
-        pass
-
-    ## outImage를 임시 폴더에 저장하고, 이걸 fullname으로 전달.
-    fullname = saveTempImage()
-    fullname = fullname.name
-    with open(fullname, 'rb') as rfp:
-        binData = rfp.read()
-
-    fname, extname = os.path.basename(fullname).split(".")
-    fsize = os.path.getsize(fullname)
-    height = width = int(math.sqrt(fsize))
-    avgVal, maxVal, minValue = findStat(fullname)  # 평균,최대,최소
-    sql = "INSERT INTO rawImage_TBL(raw_id , raw_fname,raw_extname,"
-    sql += "raw_height,raw_width,raw_avg,raw_max,raw_min,raw_data) "
-    sql += " VALUES(NULL,'" + fname + "','" + extname + "',"
-    sql += str(height) + "," + str(width) + ","
-    sql += str(avgVal) + "," + str(maxVal) + "," + str(minValue)
-    sql += ", %s )"
-    tupleData = (binData,)
-    cur.execute(sql, tupleData)
-    con.commit()
-    cur.close()
-    con.close()
-    os.remove(fullname)
-    print("업로드 OK -->" + fullname)
-
-
-def loadMysql() :
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    con = pymysql.connect(host)
-    pass
-
 
 ####################
 #### 전역변수 선언부 ####
@@ -684,7 +599,7 @@ window, canvas, paper = None, None, None
 filename = ""
 panYN = False
 sx,sy,ex,ey = [0] * 4
-VIEW_X, VIEW_Y = 512, 512 # 화면에 보일 크기 (출력용)
+VIEW_X, VIEW_Y = 512, 512 # 화면에 보일 크기(출력용)
 ####################
 #### 메인 코드부 ####
 ####################
@@ -692,7 +607,8 @@ window = Tk()
 window.geometry("500x500")
 window.title("컴퓨터 비전(딥러닝 기법) ver 0.03")
 
-status = Label(window, text='이미지 정보:', bd=1, relief=SUNKEN, anchor=W)
+status = Label(window, text='이미지 정보', bd=1, relief=SUNKEN, anchor=W) # 스테이터스 바
+
 status.pack(side=BOTTOM, fill=X)
 
 ## 마우스 이벤트
@@ -739,10 +655,5 @@ comVisionMenu3.add_command(label="회전2(중심,역방향)", command=rotateImag
 comVisionMenu4 = Menu(mainMenu)
 mainMenu.add_cascade(label="화소영역 처리", menu=comVisionMenu4)
 comVisionMenu4.add_command(label="엠보싱", command=embossImage)
-
-comVisionMenu5 = Menu(mainMenu)
-mainMenu.add_cascade(label="데이터베이스 입출력", menu=comVisionMenu5)
-comVisionMenu5.add_command(label="MySQL에서 불러오기", command=loadMysql)
-comVisionMenu5.add_command(label="MySQL에 저장하기", command=saveMysql)
 
 window.mainloop()

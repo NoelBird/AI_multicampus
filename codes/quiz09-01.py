@@ -28,7 +28,7 @@ def loadImage(fname) :
     inImage=[]
     inImage=malloc(inH,inW)
     # 파일 --> 메모리
-    with open(filename, 'rb') as rFp:
+    with open(fname, 'rb') as rFp:
         for i in range(inH) :
             for k in range(inW) :
                 inImage[i][k] = int(ord(rFp.read(1)))
@@ -68,6 +68,8 @@ def displayImage() :
         VIEW_Y = outH
         step = 1
     else :
+        VIEW_X = 512
+        VIEW_Y = 512
         step = outW / VIEW_X
 
     window.geometry(str(int(VIEW_Y*1.2)) + 'x' + str(int(VIEW_X*1.2)))  # 벽
@@ -672,9 +674,142 @@ def saveMysql() :
 
 def loadMysql() :
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    con = pymysql.connect(host)
-    pass
+    con = pymysql.connect(host=IP_ADDR, user=USER_NAME, password=USER_PASS,
+                          db=DB_NAME, charset=CHAR_SET)
+    cur = con.cursor()
+    sql = "SELECT raw_id, raw_fname, raw_extname, raw_height, raw_width "
+    sql += "FROM rawImage_TBL"
+    cur.execute(sql)
 
+    queryList = cur.fetchall()
+    rowList = [ ':'.join(map(str,row)) for row in queryList]
+    import tempfile
+    def selectRecord( ) :
+        global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+        selIndex = listbox.curselection()[0]
+        subWindow.destroy()
+        raw_id = queryList[selIndex][0]
+        sql = "SELECT raw_fname, raw_extname, raw_data FROM rawImage_TBL "
+        sql += "WHERE raw_id = " + str(raw_id)
+        cur.execute(sql)
+        fname, extname, binData = cur.fetchone()
+
+        fullPath = tempfile.gettempdir() + '/' + fname + "." + extname
+        with open(fullPath, 'wb') as wfp:
+            wfp.write(binData)
+        cur.close()
+        con.close()
+
+        loadImage(fullPath)
+        equalImage()
+
+    ## 서브 윈도에 목록 출력하기.
+    subWindow = Toplevel(window)
+    listbox = Listbox(subWindow)
+    button = Button(subWindow, text='선택', command = selectRecord)
+
+    for rowStr in rowList :
+        listbox.insert(END, rowStr)
+
+    listbox.pack(expand=1, anchor=CENTER)
+    button.pack()
+    subWindow.mainloop()
+
+
+    cur.close()
+    con.close()
+
+
+
+import sqlite3
+def saveSqlite() :
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+    con = sqlite3.connect(DB_NAME)
+    cur = con.cursor()
+    try:
+        sql = '''
+                CREATE TABLE rawImage_TBL (
+                raw_id INT AUTO_INCREMENT PRIMARY KEY,
+                raw_fname VARCHAR(30),
+                raw_extname CHAR(5),
+                raw_height SMALLINT, raw_width SMALLINT,
+                raw_avg  TINYINT UNSIGNED , 
+                raw_max  TINYINT UNSIGNED,  raw_min  TINYINT UNSIGNED,
+                raw_data LONGBLOB);
+            '''
+        cur.execute(sql)
+    except:
+        pass
+
+    ## outImage를 임시 폴더에 저장하고, 이걸 fullname으로 전달.
+    fullname = saveTempImage()
+    fullname = fullname.name
+    with open(fullname, 'rb') as rfp:
+        binData = rfp.read()
+
+    fname, extname = os.path.basename(fullname).split(".")
+    fsize = os.path.getsize(fullname)
+    height = width = int(math.sqrt(fsize))
+    avgVal, maxVal, minValue = findStat(fullname)  # 평균,최대,최소
+    sql = "INSERT INTO rawImage_TBL(raw_id , raw_fname,raw_extname,"
+    sql += "raw_height,raw_width,raw_avg,raw_max,raw_min,raw_data) "
+    sql += " VALUES(NULL,'" + fname + "','" + extname + "',"
+    sql += str(height) + "," + str(width) + ","
+    sql += str(avgVal) + "," + str(maxVal) + "," + str(minValue)
+    sql += ", ? )"
+    # tupleData = (binData,)
+    cur.execute(sql, [sqlite3.Binary(binData)])
+    con.commit()
+    cur.close()
+    con.close()
+    os.remove(fullname)
+    print("업로드 OK -->" + fullname)
+
+def loadSqlite() :
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+    con = sqlite3.connect(DB_NAME)
+    cur = con.cursor()
+    sql = "SELECT raw_id, raw_fname, raw_extname, raw_height, raw_width "
+    sql += "FROM rawImage_TBL"
+    cur.execute(sql)
+
+    queryList = cur.fetchall()
+    rowList = [ ':'.join(map(str,row)) for row in queryList]
+    import tempfile
+    def selectRecord( ) :
+        global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+        selIndex = listbox.curselection()[0]
+        subWindow.destroy()
+        raw_id = queryList[selIndex][0]
+        sql = "SELECT raw_fname, raw_extname, raw_data FROM rawImage_TBL "
+        sql += "WHERE raw_id = " + str(raw_id)
+        cur.execute(sql)
+        fname, extname, binData = cur.fetchone()
+
+        fullPath = tempfile.gettempdir() + '/' + fname + "." + extname
+        with open(fullPath, 'wb') as wfp:
+            wfp.write(binData)
+        cur.close()
+        con.close()
+
+        loadImage(fullPath)
+        equalImage()
+
+    ## 서브 윈도에 목록 출력하기.
+    subWindow = Toplevel(window)
+    listbox = Listbox(subWindow)
+    button = Button(subWindow, text='선택', command = selectRecord)
+
+    for rowStr in rowList :
+        listbox.insert(END, rowStr)
+
+    listbox.pack(expand=1, anchor=CENTER)
+    button.pack()
+    subWindow.mainloop()
+
+
+    cur.close()
+    con.close()
 
 ####################
 #### 전역변수 선언부 ####
@@ -690,7 +825,7 @@ VIEW_X, VIEW_Y = 512, 512 # 화면에 보일 크기 (출력용)
 ####################
 window = Tk()
 window.geometry("500x500")
-window.title("컴퓨터 비전(딥러닝 기법) ver 0.03")
+window.title("컴퓨터 비전(딥러닝 기법) ver 0.04")
 
 status = Label(window, text='이미지 정보:', bd=1, relief=SUNKEN, anchor=W)
 status.pack(side=BOTTOM, fill=X)
@@ -744,5 +879,8 @@ comVisionMenu5 = Menu(mainMenu)
 mainMenu.add_cascade(label="데이터베이스 입출력", menu=comVisionMenu5)
 comVisionMenu5.add_command(label="MySQL에서 불러오기", command=loadMysql)
 comVisionMenu5.add_command(label="MySQL에 저장하기", command=saveMysql)
+comVisionMenu5.add_command(label="sqlite에서 불러오기", command=loadSqlite)
+comVisionMenu5.add_command(label="sqlite에 저장하기", command=saveSqlite)
+
 
 window.mainloop()
