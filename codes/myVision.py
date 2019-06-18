@@ -20,17 +20,29 @@ import csv
 #### 클래스 선언부 ####
 #######################
 class Window:
-    pass
-
-
-class Canvas:
-    pass
-
-
-class Image:
     def __init__(self):
-        self.H = -1
-        self.W = -1
+        self.canvas = None
+        self.W = 0
+        self.H = 0
+
+    def putSize(self, H: int, W: int):
+        self.H = H
+        self.W = W
+
+#
+# class Canvas:
+#     def __init__(self):
+#         self.paper = None
+
+
+class Paper:
+    pass
+
+
+class InImage:
+    def __init__(self, H=-1, W=-1):
+        self.H = H
+        self.W = W
         self.filename = ''
         self.mem = None
 
@@ -41,10 +53,8 @@ class Image:
     def malloc(self, initValue: int = 0) -> list:
         """
         이미지의 높이, 폭 값을 받아온 다음 메모리를 할당하여 list로 돌려준다.
-        :param h: 높이(height)
-        :param w:폭(width)
-        :param initValue: 초기값
-        :return:이중 list의 형태로 메모리를 돌려준다.
+        :param initValue:
+        :return:
         """
         if self.H == -1 or self.W == -1:
             print("set H and W!!")
@@ -59,11 +69,42 @@ class Image:
         self.mem = retMemory
 
 
+class OutImage:
+    def __init__(self, H=-1, W=-1):
+        self.H = H
+        self.W = W
+        self.filename = ''
+        self.mem = None
+
+    def putSize(self, H: int, W: int):
+        self.H = H
+        self.W = W
+
+    def malloc(self, initValue: int = 0) -> list:
+        """
+        이미지의 높이, 폭 값을 받아온 다음 메모리를 할당하여 list로 돌려준다.
+        :param initValue:
+        :return:
+        """
+        if self.H == -1 or self.W == -1:
+            print("set H and W!!")
+            exit(-1)
+        # retMemory = [initValue for _ in range(w)]*h # pythonic expression
+        retMemory = []
+        for _ in range(self.H):
+            tmpList = []
+            for _ in range(self.W):
+                tmpList.append(initValue)
+            retMemory.append(tmpList)
+        self.mem = retMemory
+
+
+
 #########################
 #### 전역변수 선언부 ####
 #########################
 # image information
-inImage, outImage = Image(), Image()
+inImage, outImage = None, None
 window, canvas, paper = None, None, None
 filename = ""
 panYN = False
@@ -81,75 +122,72 @@ CHAR_SET = 'utf8'
 #####################
 #### 함수 선언부 ####
 #####################
+# # TODO: from here
 def loadImage(fname: str) -> None:
     """
-    파일을 읽어들여서 메모리에 로드
-    :param fname:
+
+    :param fname:메모리로 가져올 RAW파일
     :return:
     """
-    global window, canvas, paper, filename, inImage, outImage
+    # global window, canvas, paper, filename
+    global inImage, outImage
     fsize = os.path.getsize(fname)  # 파일의 크기(바이트)
-
-    inImage = Image()
     inH = inW = int(math.sqrt(fsize))  # 핵심 코드
-    ## 입력영상 메모리 확보 ##
 
-    inImage = malloc(inImage.H, inW)
+    inImage = InImage(H=inH, W=inW)
     # 파일 --> 메모리
+    inImage.malloc()
     with open(fname, 'rb') as rFp:
         for i in range(inH):
             for k in range(inW):
-                inImage[i][k] = int(ord(rFp.read(1)))
+                inImage.mem[i][k] = int(ord(rFp.read(1)))
 
 
 # 파일을 선택해서 메모리로 로딩하는 함수
-def openImage(Image):
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+def openImage():
+    # global window, canvas, paper, filename, inImage, outImage
     filename = askopenfilename(
         parent=window, filetypes=(("RAW 파일", "*.raw"), ("모든 파일", "*.*")))
-    if filename == '' or filename == None:
+    if not filename:
         return
     loadImage(filename)
     equalImage()
-
-
-def saveImage():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    saveFp = asksaveasfile(
-        parent=window,
-        mode='wb',
-        defaultextension='*.raw',
-        filetypes=(("RAW 파일", "*.raw"), ("모든 파일", "*.*")))
-    print(saveFp, type(saveFp))
-    if saveFp == '' or saveFp == None:
-        return
-    for i in range(outH):
-        for k in range(outW):
-            saveFp.write(struct.pack('B', outImage[i][k]))
-    saveFp.close()
+#
+#
+# def saveImage():
+#     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+#     saveFp = asksaveasfile(
+#         parent=window,
+#         mode='wb',
+#         defaultextension='*.raw',
+#         filetypes=(("RAW 파일", "*.raw"), ("모든 파일", "*.*")))
+#     print(saveFp, type(saveFp))
+#     if saveFp == '' or saveFp == None:
+#         return
+#     for i in range(outH):
+#         for k in range(outW):
+#             saveFp.write(struct.pack('B', outImage[i][k]))
+#     saveFp.close()
 
 
 def displayImage():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    global VIEW_X, VIEW_Y
-    if canvas != None:  # 예전에 실행한 적이 있다.
-        canvas.destroy()
+    global window, canvas, paper, inImage, outImage, myWin
+    # if not canvas:  # 예전에 실행한 적이 있다.
+    #     canvas.destroy()
 
     ## 고정된 화면 크기
-    if outH <= VIEW_Y or outW <= VIEW_X:
-        VIEW_X = outW
-        VIEW_Y = outH
+    if outImage.H <= myWin.H or outImage.W <= myWin.W:
+        myWin.putSize(H=outImage.H, W=outImage.W)
         step = 1
     else:
-        VIEW_X = 512
-        VIEW_Y = 512
-        step = outW / VIEW_X
+        myWin.putSize(H=512, W=512)
+        step = outImage.W / myWin.W
 
-    window.geometry(str(int(VIEW_Y * 1.2)) + 'x' + str(int(VIEW_X * 1.2)))  # 벽
-    canvas = Canvas(window, height=VIEW_Y, width=VIEW_X)
-    paper = PhotoImage(height=VIEW_Y, width=VIEW_X)
+    window.geometry(str(int(myWin.H * 1.2)) + 'x' + str(int(myWin.W * 1.2)))  # 벽
+    canvas = Canvas(window, height=myWin.H, width=myWin.W)
+    paper = PhotoImage(height=myWin.H, width=myWin.W)
     canvas.create_image(
-        (VIEW_Y // 2, VIEW_X // 2), image=paper, state='normal')
+        (myWin.H // 2, myWin.W // 2), image=paper, state='normal')
 
     ## 화면 크기를 조절
     # window.geometry(str(outH) + 'x' + str(outW)) # 벽
@@ -163,38 +201,36 @@ def displayImage():
     #         paper.put("#%02x%02x%02x" % (r, g, b), (k, i))
     ## 성능 개선
     rgbStr = ''  # 전체 픽셀의 문자열을 저장
-    for i in np.arange(0, outH, step):
+    for i in np.arange(0, outImage.H, step):
         tmpStr = ''
-        for k in np.arange(0, outW, step):
+        for k in np.arange(0, outImage.W, step):
             i = int(i)
             k = int(k)
-            r = g = b = outImage[i][k]
+            r = g = b = outImage.mem[i][k]
             tmpStr += ' #%02x%02x%02x' % (r, g, b)
         rgbStr += '{' + tmpStr + '} '
     paper.put(rgbStr)
 
-    canvas.bind('<Button-1>', mouseClick)
-    canvas.bind('<ButtonRelease-1>', mouseDrop)
+    # canvas.bind('<Button-1>', mouseClick)
+    # canvas.bind('<ButtonRelease-1>', mouseDrop)
     canvas.pack(expand=1, anchor=CENTER)
-    status.configure(text='이미지 정보:' + str(outW) + 'x' + str(outH))
-
-
-###############################################
-##### 컴퓨터 비전(영상처리) 알고리즘 함수 모음 #####
-###############################################
-# 동일영상 알고리즘
+    # status.configure(text='이미지 정보:' + str(outW) + 'x' + str(outH))
+#
+#
+# ###############################################
+# ##### 컴퓨터 비전(영상처리) 알고리즘 함수 모음 #####
+# ###############################################
+# # 동일영상 알고리즘
 def equalImage():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    ## 중요! 코드. 출력영상 크기 결정 ##
-    outH = inH
-    outW = inW
+    global inImage, outImage
     ###### 메모리 할당 ################
-    outImage = []
-    outImage = malloc(outH, outW)
+    outH, outW = inImage.H, inImage.W
+    outImage = OutImage(outH, outW)
+    outImage.malloc()
     ####### 진짜 컴퓨터 비전 알고리즘 #####
-    for i in range(inH):
-        for k in range(inW):
-            outImage[i][k] = inImage[i][k]
+    for i in range(inImage.H):
+        for k in range(inImage.W):
+            outImage.mem[i][k] = inImage.mem[i][k]
 
     displayImage()
 
@@ -870,53 +906,54 @@ def equalImage():
 #
 #     cur.close()
 #     con.close()
-
-
-def saveCsv():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    with asksaveasfile(
-            parent=window,
-            mode='w',
-            defaultextension='*.raw',
-            filetypes=(("CSV 파일", "*.csv"), ("모든 파일", "*.*"))) as saveFp:
-        if saveFp == '' or saveFp == None:
-            return
-        for i in range(outW):
-            for k in range(outH):
-                saveFp.write(",".join(map(str, [i, k, outImage[i][k]])) + '\n')
-    print("save 완료~~")
-
-
-def loadCsv():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    fname = askopenfilename(
-        parent=None, filetypes=(("CSV 파일", "*.csv"), ("모든 파일", "*.*")))
-    csvList = []
-    with open(fname) as rfp:
-        reader = csv.reader(rfp)
-        # headerList = next(reader)
-        for cList in reader:
-            csvList.append(cList)
-
-    fsize = len(csvList)  # 파일의 크기(바이트)
-    inH = inW = int(math.sqrt(fsize))  # 핵심 코드
-    ## 입력영상 메모리 확보 ##
-    inImage = []
-    inImage = malloc(inH, inW)
-    # 파일 --> 메모리
-    curIdx = 0
-    for i in csvList:
-        inImage[int(i[0])][int(i[1])] = int(i[2])
-        curIdx += 1
-
-    equalImage()
-    displayImage()
+#
+#
+# def saveCsv():
+#     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+#     with asksaveasfile(
+#             parent=window,
+#             mode='w',
+#             defaultextension='*.raw',
+#             filetypes=(("CSV 파일", "*.csv"), ("모든 파일", "*.*"))) as saveFp:
+#         if saveFp == '' or saveFp == None:
+#             return
+#         for i in range(outW):
+#             for k in range(outH):
+#                 saveFp.write(",".join(map(str, [i, k, outImage[i][k]])) + '\n')
+#     print("save 완료~~")
+#
+#
+# def loadCsv():
+#     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+#     fname = askopenfilename(
+#         parent=None, filetypes=(("CSV 파일", "*.csv"), ("모든 파일", "*.*")))
+#     csvList = []
+#     with open(fname) as rfp:
+#         reader = csv.reader(rfp)
+#         # headerList = next(reader)
+#         for cList in reader:
+#             csvList.append(cList)
+#
+#     fsize = len(csvList)  # 파일의 크기(바이트)
+#     inH = inW = int(math.sqrt(fsize))  # 핵심 코드
+#     ## 입력영상 메모리 확보 ##
+#     inImage = []
+#     inImage = malloc(inH, inW)
+#     # 파일 --> 메모리
+#     curIdx = 0
+#     for i in csvList:
+#         inImage[int(i[0])][int(i[1])] = int(i[2])
+#         curIdx += 1
+#
+#     equalImage()
+#     displayImage()
 
 
 ####################
 #### 메인 코드부 ####
 ####################
 if __name__ == "__main__":
+    myWin = Window()
     window = tkinter.Tk()
     window.geometry("500x500")
     window.title("컴퓨터 비전(딥러닝 기법) ver 0.04")
@@ -931,50 +968,50 @@ if __name__ == "__main__":
     fileMenu = tkinter.Menu(mainMenu)
     mainMenu.add_cascade(label="파일", menu=fileMenu)
     fileMenu.add_command(label="파일 열기", command=openImage)
-    fileMenu.add_separator()
-    fileMenu.add_command(label="파일 저장", command=saveImage)
-
-    comVisionMenu1 = Menu(mainMenu)
-    mainMenu.add_cascade(label="화소점 처리", menu=comVisionMenu1)
-    comVisionMenu1.add_command(label="덧셈/뺄셈", command=addImage)
-    comVisionMenu1.add_command(label="반전하기", command=revImage)
-    comVisionMenu1.add_command(label="파라볼라", command=paraImage)
-    comVisionMenu1.add_separator()
-    comVisionMenu1.add_command(label="모핑", command=morphImage)
-
-    comVisionMenu2 = Menu(mainMenu)
-    mainMenu.add_cascade(label="통계", menu=comVisionMenu2)
-    comVisionMenu2.add_command(label="이진화", command=bwImage)
-    comVisionMenu2.add_command(label="축소(평균변환)", command=zoomOutImage2)
-    comVisionMenu2.add_command(label="확대(양선형보간)", command=zoomInImage2)
-    comVisionMenu2.add_separator()
-    comVisionMenu2.add_command(label="히스토그램", command=histoImage)
-    comVisionMenu2.add_command(label="히스토그램(내꺼)", command=histoImage2)
-    comVisionMenu2.add_command(label="명암대비", command=stretchImage)
-    comVisionMenu2.add_command(label="End-In탐색", command=endinImage)
-    comVisionMenu2.add_command(label="평활화", command=equalizeImage)
-
-    comVisionMenu3 = Menu(mainMenu)
-    mainMenu.add_cascade(label="기하학 처리", menu=comVisionMenu3)
-    comVisionMenu3.add_command(label="상하반전", command=upDownImage)
-    comVisionMenu3.add_command(label="이동", command=moveImage)
-    comVisionMenu3.add_command(label="축소", command=zoomOutImage)
-    comVisionMenu3.add_command(label="확대", command=zoomInImage)
-    comVisionMenu3.add_command(label="회전1", command=rotateImage)
-    comVisionMenu3.add_command(label="회전2(중심,역방향)", command=rotateImage2)
-
-    comVisionMenu4 = Menu(mainMenu)
-    mainMenu.add_cascade(label="화소영역 처리", menu=comVisionMenu4)
-    comVisionMenu4.add_command(label="엠보싱", command=embossImage)
-
-    comVisionMenu5 = Menu(mainMenu)
-    mainMenu.add_cascade(label="데이터베이스 입출력", menu=comVisionMenu5)
-    comVisionMenu5.add_command(label="MySQL에서 불러오기", command=loadMysql)
-    comVisionMenu5.add_command(label="MySQL에 저장하기", command=saveMysql)
-
-    comVisionMenu6 = Menu(mainMenu)
-    mainMenu.add_cascade(label="CSV 처리", menu=comVisionMenu6)
-    comVisionMenu6.add_command(label="CSV 저장", command=saveCsv)
-    comVisionMenu6.add_command(label="CSV 열기", command=loadCsv)
+    # fileMenu.add_separator()
+    # fileMenu.add_command(label="파일 저장", command=saveImage)
+    #
+    # comVisionMenu1 = Menu(mainMenu)
+    # mainMenu.add_cascade(label="화소점 처리", menu=comVisionMenu1)
+    # comVisionMenu1.add_command(label="덧셈/뺄셈", command=addImage)
+    # comVisionMenu1.add_command(label="반전하기", command=revImage)
+    # comVisionMenu1.add_command(label="파라볼라", command=paraImage)
+    # comVisionMenu1.add_separator()
+    # comVisionMenu1.add_command(label="모핑", command=morphImage)
+    #
+    # comVisionMenu2 = Menu(mainMenu)
+    # mainMenu.add_cascade(label="통계", menu=comVisionMenu2)
+    # comVisionMenu2.add_command(label="이진화", command=bwImage)
+    # comVisionMenu2.add_command(label="축소(평균변환)", command=zoomOutImage2)
+    # comVisionMenu2.add_command(label="확대(양선형보간)", command=zoomInImage2)
+    # comVisionMenu2.add_separator()
+    # comVisionMenu2.add_command(label="히스토그램", command=histoImage)
+    # comVisionMenu2.add_command(label="히스토그램(내꺼)", command=histoImage2)
+    # comVisionMenu2.add_command(label="명암대비", command=stretchImage)
+    # comVisionMenu2.add_command(label="End-In탐색", command=endinImage)
+    # comVisionMenu2.add_command(label="평활화", command=equalizeImage)
+    #
+    # comVisionMenu3 = Menu(mainMenu)
+    # mainMenu.add_cascade(label="기하학 처리", menu=comVisionMenu3)
+    # comVisionMenu3.add_command(label="상하반전", command=upDownImage)
+    # comVisionMenu3.add_command(label="이동", command=moveImage)
+    # comVisionMenu3.add_command(label="축소", command=zoomOutImage)
+    # comVisionMenu3.add_command(label="확대", command=zoomInImage)
+    # comVisionMenu3.add_command(label="회전1", command=rotateImage)
+    # comVisionMenu3.add_command(label="회전2(중심,역방향)", command=rotateImage2)
+    #
+    # comVisionMenu4 = Menu(mainMenu)
+    # mainMenu.add_cascade(label="화소영역 처리", menu=comVisionMenu4)
+    # comVisionMenu4.add_command(label="엠보싱", command=embossImage)
+    #
+    # comVisionMenu5 = Menu(mainMenu)
+    # mainMenu.add_cascade(label="데이터베이스 입출력", menu=comVisionMenu5)
+    # comVisionMenu5.add_command(label="MySQL에서 불러오기", command=loadMysql)
+    # comVisionMenu5.add_command(label="MySQL에 저장하기", command=saveMysql)
+    #
+    # comVisionMenu6 = Menu(mainMenu)
+    # mainMenu.add_cascade(label="CSV 처리", menu=comVisionMenu6)
+    # comVisionMenu6.add_command(label="CSV 저장", command=saveCsv)
+    # comVisionMenu6.add_command(label="CSV 열기", command=loadCsv)
 
     window.mainloop()
