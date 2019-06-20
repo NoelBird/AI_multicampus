@@ -43,6 +43,7 @@ def openImage() :
     loadImage(filename)
     equalImage()
 
+
 import struct
 def saveImage() :
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
@@ -105,6 +106,7 @@ def displayImage() :
     canvas.pack(expand=1, anchor=CENTER)
     status.configure(text='이미지 정보:' + str(outW) + 'x' + str(outH))
 
+
 ###############################################
 ##### 컴퓨터 비전(영상처리) 알고리즘 함수 모음 #####
 ###############################################
@@ -154,6 +156,7 @@ def  revImage() :
         for k in range(inW) :
             outImage[i][k] = 255 - inImage[i][k]
     displayImage()
+
 
 # 이진화 알고리즘
 def  bwImage() :

@@ -10,7 +10,7 @@ import numpy as np
 ####################
 # 메모리를 할당해서 리스트(참조)를 반환하는 함수
 def malloc(h, w, initValue=0, dataType=np.uint8) :
-    retMemory = np.zeros((h, w), dtype=dataType)
+    retMemory = np.zeros((h,w), dtype=dataType)
     retMemory += initValue
     return retMemory
 
@@ -30,27 +30,27 @@ def openImage() :
     global window, canvas, paper, filename, inImage, outImage,inH, inW, outH, outW
     filename = askopenfilename(parent=window,
                 filetypes=(("RAW 파일", "*.raw"), ("모든 파일", "*.*")))
-    if not filename:
+    if filename == '' or filename == None :
         return
-    # start = time.time()
+    start = time.time()
     loadImage(filename)
     equalImage()
-    # print(time.time()-start)
-
+    print(time.time()-start)
 
 import struct
-def saveImage():
+def saveImage() :
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
     saveFp = asksaveasfile(parent=window, mode='wb',
-                       defaultextension='*.raw',
-                       filetypes=(("RAW 파일", "*.raw"), ("모든 파일", "*.*")))
-    if not saveFp:
+        defaultextension='*.raw', filetypes=(("RAW 파일", "*.raw"), ("모든 파일", "*.*")))
+    print(saveFp, type(saveFp))
+    if saveFp == '' or saveFp == None :
         return
-    saveFp.write(outImage.tobytes())
+    for i in range(outH) :
+        for k in range(outW) :
+            saveFp.write(struct.pack('B', outImage[i][k]))
     saveFp.close()
 
-
-def displayImage():
+def displayImage() :
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
     global VIEW_X, VIEW_Y
     if canvas != None : # 예전에 실행한 적이 있다.
@@ -72,14 +72,13 @@ def displayImage():
     canvas.create_image((VIEW_Y // 2, VIEW_X // 2), image=paper, state='normal')
 
     import numpy
-    rgbStr = ''  # 전체 픽셀의 문자열을 저장
-    for i in numpy.arange(0, outH, step):
+    rgbStr = '' # 전체 픽셀의 문자열을 저장
+    for i in numpy.arange(0,outH, step) :
         tmpStr = ''
-        for k in numpy.arange(0, outW, step):
-            i = int(i);
-            k = int(k)
+        for k in numpy.arange(0,outW, step) :
+            i = int(i); k = int(k)
             r = g = b = int(outImage[i][k])
-            tmpStr += ' #%02x%02x%02x' % (r, g, b)
+            tmpStr += ' #%02x%02x%02x' % (r,g,b)
         rgbStr += '{' + tmpStr + '} '
     paper.put(rgbStr)
 
@@ -97,7 +96,7 @@ def  equalImage() :
     ## 중요! 코드. 출력영상 크기 결정 ##
     outH = inH;  outW = inW;
     ####### 진짜 컴퓨터 비전 알고리즘 #####
-    outImage = inImage[:]
+    outImage = inImage.copy()
 
     displayImage()
 
@@ -129,11 +128,7 @@ def  revImage() :
     # outImage = [];    outImage = malloc(outH, outW)
     ####### 진짜 컴퓨터 비전 알고리즘 #####
     outImage = 255 - inImage
-    # for i in range(inH) :
-    #     for k in range(inW) :
-    #         outImage[i][k] = 255 - inImage[i][k]
     displayImage()
-
 
 # 이진화 알고리즘
 def  bwImage() :
@@ -141,15 +136,12 @@ def  bwImage() :
     ## 중요! 코드. 출력영상 크기 결정 ##
     outH = inH;  outW = inW;
     ###### 메모리 할당 ################
-    outImage = inImage.copy[:]
     ####### 진짜 컴퓨터 비전 알고리즘 #####
     ## 영상의 평균 구하기.
-    avg = inImage.mean()
-
-    outImage = np.where(inImage > avg, 255, 0)
+    avg = np.average(inImage)
+    outImage = np.where(outImage > avg, 255, 0)
 
     displayImage()
-
 
 # 파라볼라 알고리즘 with LUT
 def  paraImage() :
@@ -157,14 +149,15 @@ def  paraImage() :
     ## 중요! 코드. 출력영상 크기 결정 ##
     outH = inH;  outW = inW;
     ###### 메모리 할당 ################
-    outImage = inImage[:]
+    outImage = [];    outImage = malloc(outH, outW)
     ####### 진짜 컴퓨터 비전 알고리즘 #####
+
     x = np.array([i for i in range(0, 256)])
-    LUT = 255 - 255*np.power(x/128 - 1, 2)
+    LUT = 255 - 255 * np.power(x / 128 - 1, 2)
     LUT = LUT.astype(np.uint8)
     outImage = LUT[inImage]
-    displayImage()
 
+    displayImage()
 
 # 상하반전 알고리즘
 def  upDownImage() :
@@ -172,9 +165,11 @@ def  upDownImage() :
     ## 중요! 코드. 출력영상 크기 결정 ##
     outH = inH;  outW = inW;
     ###### 메모리 할당 ################
-    outImage = inImage[:]
+    outImage = [];    outImage = malloc(outH, outW)
     ####### 진짜 컴퓨터 비전 알고리즘 #####
-    outImage = inImage[::-1, :]
+    #outImage = inImage[::-1, ::1]
+    outImage = np.flip(inImage,axis=0)
+
     displayImage()
 
 # 화면이동 알고리즘
@@ -190,8 +185,6 @@ def mouseClick(event) :
         return
     sx = event.x; sy = event.y
 
-
-#TODO: from here
 def mouseDrop(event) :
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
     global sx, sy, ex, ey, panYN
@@ -201,26 +194,28 @@ def mouseDrop(event) :
     ## 중요! 코드. 출력영상 크기 결정 ##
     outH = inH;  outW = inW;
     ###### 메모리 할당 ################
-    outImage = np.zeros_like(inImage)
+    outImage = [];    outImage = malloc(outH, outW)
     ####### 진짜 컴퓨터 비전 알고리즘 #####
     mx = sx - ex; my = sy - ey
-    if mx < 0 and my < 0:
-        outImage[-mx:inH, -my:inW] = inImage[0:inH+mx, 0:inW+my]
+    # if mx < 0 and my < 0 :
+    #     outImage[-mx:inH, -my:inW] = inImage[0:inH+mx, 0:inW+my]
+    # elif mx >=0 and my >= 0 :
+    #     outImage[0:inH-mx, 0:inW-my] = inImage[mx:inH, my:inW]
+    # elif mx < 0 and my >= 0:
+    #     outImage[0:inH-mx, -my:inW] = inImage[mx:inH, 0:inW+my]
+    # elif mx >= 0 and my < 0:
+    #     outImage[(-mx):inH, 0:inW-my] = inImage[0:inH+mx, my:inW]
 
-    outImage = np.zeros_like(inImage)
-
-
-    # outImage[outIdxH, outIdxW] = inImage[]
-
-    # print(outIdxW)
-    # print(len(outIdxH))
-    # print(len(idxH[:len(outIdxH)]))
-    #
-    # outImage[outIdxH][outIdxW] = inImage[idxH[:len(outIdxH)]][idxW[:len(outIdxW)]]
-    # if  0 <= i-my < outW and 0 <= k-mx < outH :
+    if mx > 0 and my > 0:
+        outImage[my:outH, mx:outW] = inImage[0:inH - my, 0:inW - mx]
+    elif mx > 0 and my < 0:
+        outImage[0:outH + my, mx:outW] = inImage[-1 * (my):inH, 0:inW - mx]
+    elif mx < 0 and my > 0:
+        outImage[my:outH, 0:outW + mx] = inImage[0:inH - my, -1 * (mx):inW]
+    elif mx < 0 and my < 0:
+        outImage[0:outH + my, 0:outW + mx] = inImage[-1 * (my):inH, -1 * (mx):inW]
     panYN = False
     displayImage()
-
 
 # 영상 축소 알고리즘
 def  zoomOutImage() :
@@ -229,9 +224,11 @@ def  zoomOutImage() :
     ## 중요! 코드. 출력영상 크기 결정 ##
     outH = inH//scale;  outW = inW//scale;
     ###### 메모리 할당 ################
-    outImage = inImage[:]
+    outImage = [];    outImage = malloc(outH, outW)
     ####### 진짜 컴퓨터 비전 알고리즘 #####
+    outImage = inImage.copy()
     outImage = inImage[::scale, ::scale]
+
 
     displayImage()
 
@@ -245,12 +242,12 @@ def  zoomOutImage2() :
     ###### 메모리 할당 ################
     outImage = [];    outImage = malloc(outH, outW)
     ####### 진짜 컴퓨터 비전 알고리즘 #####
-    mxx, myy = np.mgrid[range(inH), range(inW)]
-    outImage[(mxx // scale, myy // scale)] += inImage[(mxx, myy)].copy()
-
-    # mxx, myy = np.mgrid[range(outH), range(outW)]
-    # outImage[mxx, myy] //= (scale)
-    # important: trying to reshape image will create complete 4-dimensional compy
+    for i in range(inH) :
+        for k in range(inW) :
+            outImage[i//scale][k//scale] += inImage[i][k]
+    for i in range(outH):
+        for k in range(outW):
+            outImage[i][k] //= (scale*scale)
 
     displayImage()
 
@@ -263,8 +260,7 @@ def  zoomInImage() :
     ###### 메모리 할당 ################
     outImage = [];    outImage = malloc(outH, outW)
     ####### 진짜 컴퓨터 비전 알고리즘 #####
-    mxx, myy = np.mgrid[range(outH), range(outW)]
-    outImage[mxx, myy] = inImage[mxx//scale, myy//scale]
+    outImage = np.kron(inImage, np.ones((scale, scale)))
 
     displayImage()
 
@@ -280,30 +276,20 @@ def  zoomInImage2() :
     rH, rW, iH, iW = [0] * 4 # 실수위치 및 정수위치
     x, y = 0, 0 # 실수와 정수의 차이값
     C1,C2,C3,C4 = [0] * 4 # 결정할 위치(N)의 상하좌우 픽셀
-    mxx, myy = np.mgrid[range(outH), range(outW)]
-    rH, iH = np.mgrid[range(outH), range(outW)]
-    rH //= scale
-    # rH = rH.astype(np.uint8)
-    iH //= scale
-    # iH = iH.astype(np.uint8)
-    x = rW - iW
-    y = rH - iH
-
-    try:
-        C1 = inImage[iH, iW]
-        # C1 = inImage[iH[0 <= iH < inH - 1], iW[0 <= iW < inW-1]]
-        C2 = inImage[iH, iW+1]
-        C3 = inImage[iH+1, iW+1]
-        C4 = inImage[iH+1, iW]
-    except:
-        pass
-    newValue = C1*(1-y)*(1-x) + C2*(1-y)* x+ C3*y*x + C4*y*(1-x)
-    outImage[mxx, myy] = newValue.astype(np.uint8)
+    for i in range(outH) :
+        for k in range(outW) :
+            rH = i / scale ; rW = k / scale
+            iH = int(rH) ;  iW = int(rW)
+            x = rW - iW; y = rH - iH
+            if 0 <= iH < inH-1 and 0 <= iW < inW-1 :
+                C1 = inImage[iH][iW]
+                C2 = inImage[iH][iW+1]
+                C3 = inImage[iH+1][iW+1]
+                C4 = inImage[iH+1][iW]
+                newValue = C1*(1-y)*(1-x) + C2*(1-y)* x+ C3*y*x + C4*y*(1-x)
+                outImage[i][k] = int(newValue)
 
     displayImage()
-
-#TODO: to here
-
 
 # 영상 회전 알고리즘
 def  rotateImage() :
@@ -312,16 +298,16 @@ def  rotateImage() :
     ## 중요! 코드. 출력영상 크기 결정 ##
     outH = inH;  outW = inW;
     ###### 메모리 할당 ################
-    outImage = np.zeros_like(inImage)
+    outImage = [];    outImage = malloc(outH, outW)
     ####### 진짜 컴퓨터 비전 알고리즘 #####
     radian = angle * math.pi / 180
-    xs_lin = np.arange(inH)
-    xs = np.repeat(xs_lin, inW)
-    ys_lin = np.arange(inW)
-    ys = np.repeat(ys_lin, inH)
-    xd = int(math.cos(radian) * xs - math.sin(radian) * ys)
-    yd = int(math.sin(radian) * xs + math.cos(radian) * ys)
-    outImage[xd[0<= xd < inH]][yd[0 <= yd < inW]] = inImage[xs_lin[0<= xd < inH]][ys_lin[0 <= yd < inW]]
+    for i in range(inH) :
+        for k in range(inW) :
+            xs = i ; ys = k;
+            xd = int(math.cos(radian) * xs - math.sin(radian) * ys)
+            yd = int(math.sin(radian) * xs + math.cos(radian) * ys)
+            if 0<= xd < inH and 0 <= yd < inW :
+                outImage[xd][yd] = inImage[i][k]
 
     displayImage()
 
@@ -347,14 +333,16 @@ def  rotateImage2() :
                 outImage[xs][ys] = 255
 
     displayImage()
-
-
 # 히스토그램
 import matplotlib.pyplot as plt
 def  histoImage() :
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    inCountList = np.arange(256)
+    inCountList = [0] * 256
     outCountList = [0] * 256
+
+    for i in range(inH) :
+        for k in range(inW) :
+            inCountList[inImage[i][k]] += 1
 
     for i in range(outH) :
         for k in range(outW) :
@@ -533,11 +521,15 @@ def  morphImage() :
     fsize = os.path.getsize(filename2)  # 파일의 크기(바이트)
     inH2 = inW2 = int(math.sqrt(fsize))  # 핵심 코드
     ## 입력영상 메모리 확보 ##
+    inImage2 = []
+    inImage2 = malloc(inH2, inW2)
     # 파일 --> 메모리
-    inImage2 = np.fromfile(filename2, dtype=np.uint8)
-    inImage2 = inImage2.reshape(inH2, inW2)
+    with open(filename2, 'rb') as rFp:
+        for i in range(inH2):
+            for k in range(inW2):
+                inImage2[i][k] = int(ord(rFp.read(1)))
     ###### 메모리 할당 ################
-    outImage = inImage[:]
+    outImage = [];    outImage = malloc(outH, outW)
     ####### 진짜 컴퓨터 비전 알고리즘 #####
     #w1 = askinteger("원영상 가중치", "가중치(%)->", minvalue=0, maxvalue=100)
     #w2 = 1- (w1/100);    w1 = 1-w2
@@ -545,18 +537,21 @@ def  morphImage() :
     import threading
     import time
     def morpFunc() :
-        global outImage
-        w1 = 1;
-        w2 = 0
-        for _ in range(20):
-            outImage = inImage*w1 + inImage2*w2
-            outImage = np.where(outImage > 255, 255, outImage)
-            outImage = np.where(outImage < 0, 0, outImage)
+        w1 = 1;        w2 = 0
+        for _ in range(20) :
+            for i in range(inH) :
+                for k in range(inW) :
+                    newValue = int(inImage[i][k]*w1 + inImage2[i][k]*w2)
+                    if newValue > 255 :
+                        newValue = 255
+                    elif newValue < 0 :
+                        newValue = 0
+                    outImage[i][k] =newValue
             displayImage()
             w1 -= 0.05;        w2 += 0.05
             time.sleep(0.5)
-    threading.Thread(target=morpFunc).start()
 
+    threading.Thread(target=morpFunc).start()
 
 ## 임시 경로에 outImage를 저장하기.
 import random
@@ -574,18 +569,30 @@ def saveTempImage() :
     saveFp.close()
     return saveFp
 
-
 def findStat(fname) :
     # 파일 열고, 읽기.
     fsize = os.path.getsize(fname) # 파일의 크기(바이트)
     inH = inW = int(math.sqrt(fsize)) # 핵심 코드
     ## 입력영상 메모리 확보 ##
+    inImage=[]
+    inImage=malloc(inH,inW)
     # 파일 --> 메모리
-    inImage = np.fromfile(fname, dtype=np.uint8)
-    inImage = inImage.reshape(inH, inW)
-    avg = inImage.mean()
-    minVal = np.min(inImage)
-    maxVal = np.max(inImage)
+    with open(fname, 'rb') as rFp:
+        for i in range(inH) :
+            for k in range(inW) :
+                inImage[i][k] = int(ord(rFp.read(1)))
+    sum = 0
+    for i in range(inH) :
+        for k in range(inW) :
+            sum += inImage[i][k]
+    avg = sum // (inW * inH)
+    maxVal = minVal = inImage[0][0]
+    for i in range(inH):
+        for k in range(inW):
+            if inImage[i][k] < minVal:
+                minVal = inImage[i][k]
+            elif inImage[i][k] > maxVal:
+                maxVal = inImage[i][k]
     return avg, maxVal, minVal
 
 import pymysql
@@ -838,7 +845,6 @@ mainMenu.add_cascade(label="기하학 처리", menu=comVisionMenu3)
 comVisionMenu3.add_command(label="상하반전", command=upDownImage)
 comVisionMenu3.add_command(label="이동", command=moveImage)
 comVisionMenu3.add_command(label="축소", command=zoomOutImage)
-comVisionMenu3.add_command(label="축소2(평균이용)", command=zoomOutImage2)
 comVisionMenu3.add_command(label="확대", command=zoomInImage)
 comVisionMenu3.add_command(label="회전1", command=rotateImage)
 comVisionMenu3.add_command(label="회전2(중심,역방향)", command=rotateImage2)
