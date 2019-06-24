@@ -2,3 +2,6 @@ codes/.idea
 codes/venv
 codes/samsongDB
 .vscode/
+quick-point/venv/
+.idea/
+*.csv
