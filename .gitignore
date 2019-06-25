@@ -5,3 +5,5 @@ codes/samsongDB
 quick-point/venv/
 .idea/
 *.csv
+*.pyc
+*.pyd
