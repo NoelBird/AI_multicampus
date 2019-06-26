@@ -7,3 +7,4 @@ quick-point/venv/
 *.csv
 *.pyc
 *.pyd
+*.autosave

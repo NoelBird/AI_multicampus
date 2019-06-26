@@ -1,27 +1,25 @@
 import sys
 import os
 import markdown as md
-import pdfkit
-import imgkit
-
 
 from PyQt5 import QtWidgets
 from PyQt5 import uic
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
+from PyQt5.QtGui import QIcon, QPixmap, QClipboard
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog, QPushButton, QHBoxLayout, QDialog
 from PyQt5.QtWebEngineWidgets import QWebEnginePage
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-from PyQt5.QtCore import QUrl
-from formpy.ui_mainwindow import Ui_mainWindow
+from PyQt5.QtCore import QUrl, QDir
+from formpy.ui_mainwindow2 import Ui_mainWindow
+import PyQt5.QtCore as QtCore
 from formpy.ui_full_disp import Ui_Dialog
-# import Bokeh
+
 
 class Mainwin(Ui_mainWindow):
     def __init__(self):
+        super(Mainwin, self).__init__()
         self.fname = ''
-        view = QWebEngineView()
-        view.setHtml("aaaaa")
-        # super(Mainwin, self).__init__()
+        self.template = ''
+
 
     def openFile(self):
         options = QFileDialog.Options()
@@ -62,43 +60,80 @@ class Mainwin(Ui_mainWindow):
         with open(fname, "wt") as fp:
             fp.write(self.txtMarkdown.toPlainText())
 
-    def saveIMG(self, fname):
-        imgkit.from_string(md.markdown(self.txtMarkdown.toPlainText()), 'out.jpg')
-
     # def savePDF(self, fname):
     #     pdfkit.from_file(self.updatePreview(), 'out.pdf')
 
     def close(self):
         sys.exit()
 
-    def updatePreview(self):
+    def mdfullScreen(self):
+        self.showFullScreen()
+
+    def updateWeb(self):
         try:
             curMD = md.markdown(self.txtMarkdown.toPlainText())
-            # self.saveIMG('out.jpg')
+            baseDir = "C:\\Users\\user\\Documents\\Python-programming\\quick-point"
+            css = "<link rel=\"stylesheet\" type=\"text/css\" href=\"templates/template1.css\"><br>"
+            totalHtml = "<div class='markdown-body'>" + css + '\n' + curMD +"</div>"
+            with open("curHtml.html", "wt") as fp:
+                fp.write(totalHtml)
+            print(css+curMD)
+            # self.wgtWeb.setHtml(css+curMD)
+            print(QDir.currentPath() + '/curHtml.html')
+            self.wgtWeb.setUrl(QUrl.fromLocalFile(QDir.currentPath() + '/curHtml.html'))
+
         except Exception as e:
             pass
         finally:
-            pixmap = QPixmap('out.jpg')
-            self.lblPreview.setFixedSize(self.lblPreview.size())
-            self.lblPreview.setPixmap(pixmap)
+            pass
+            # pixmap = QPixmap('out.jpg')
+            # self.lblPreview.setFixedSize(self.lblPreview.size())
+            # self.lblPreview.setPixmap(pixmap)
 
+#
+# class ctrlWin(QtWidgets.QMainWindow):
+#     cnt = 0
+#     def __init__(self):
+#         self.win = QtWidgets.QMainWindow()
+#         ui = Mainwin()
+#         ui.setupUi(self.win)
+#         self.win.setWindowIcon(QIcon('logoico.ico'))
+#         self.win.statusBar().showMessage('준비')
+#         self.wgtWeb = self.win.findChild(QWebEngineView)
+#
+#         self.win.txtMarkdown.connect()
+#         self.win.show()
+#
+#     def updateWindow(self):
+#         self.wgtWeb.setHtml("%d" % ctrlWin.cnt)
+#         ctrlWin += 1
+#         # submitFrame = self.subwindow.findChild(QtGui.QFrame, "frameSubmit")
 
-
-
-
-
-
+def showFullScreen(mainwin):
+    pass
+    wgt = QDialog()
+    wgt.showFullScreen()
+    # wgt.setWindowFlags(QtCore.Qt.Window | )
+    wgt.showFullScreen()
+    wgt.
+    wgt.exec_()
 
 if __name__ == '__main__':
     import sys
     app = QtWidgets.QApplication(sys.argv)
+    # wmain = ctrlWin()
     MainWindow = QtWidgets.QMainWindow()
     ui = Mainwin()
-    # ui = Ui_Dialog()
     ui.setupUi(MainWindow)
     MainWindow.setWindowIcon(QIcon('logoico.ico'))
-    web = QWebEngineView()
-    web.setUrl(QUrl("https://www.google.com"))
-    MainWindow.form_layout.addWidget(web)
-    MainWindow.show()
+    MainWindow.statusBar().showMessage('준비')
+    # web = QWebEngineView()
+    # web.setUrl(QUrl("https://www.google.com"))
+    # web.setHtml("aaaaa")
+    # MainWindow.findChild(QHBoxLayout).addWidget(web) #TODO: 웹뷰 추가하기
+    # MainWindow.findChild(QWebEngineView).setHtml('aaaa')
+    # web.move()
+    MainWindow.show()  # 창 화면으로 화면 띄우기
+    # MainWindow.showFullScreen()  # 전체화면으로 화면을 띄우기
+    showFullScreen(MainWindow)
     sys.exit(app.exec_())
