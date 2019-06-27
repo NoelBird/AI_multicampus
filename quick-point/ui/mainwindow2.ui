@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>846</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,23 +31,23 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>771</width>
-      <height>541</height>
+      <width>791</width>
+      <height>551</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,2">
      <property name="sizeConstraint">
       <enum>QLayout::SetMaximumSize</enum>
      </property>
-     <item>
-      <widget class="QTextEdit" name="txtMarkdown"/>
-     </item>
      <item>
       <widget class="QWebEngineView" name="wgtWeb" native="true">
        <property name="enabled">
         <bool>false</bool>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="txtMarkdown"/>
      </item>
     </layout>
    </widget>
@@ -57,7 +57,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>846</width>
      <height>21</height>
     </rect>
    </property>
@@ -67,6 +67,8 @@
     </property>
     <addaction name="actionopen"/>
     <addaction name="actionsave"/>
+    <addaction name="actionimportPPT"/>
+    <addaction name="actionexportPPT"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menu_2">
@@ -92,8 +94,18 @@
     <addaction name="actionstretch"/>
     <addaction name="actionrotate"/>
    </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>템플릿</string>
+    </property>
+    <addaction name="actionGithub"/>
+    <addaction name="actionDracula"/>
+    <addaction name="actionPresentation"/>
+    <addaction name="actionTmp"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
+   <addaction name="menu_4"/>
    <addaction name="menu_3"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -165,6 +177,36 @@
     <string>rotate</string>
    </property>
   </action>
+  <action name="actionGithub">
+   <property name="text">
+    <string>Github</string>
+   </property>
+  </action>
+  <action name="actionDracula">
+   <property name="text">
+    <string>Dracula</string>
+   </property>
+  </action>
+  <action name="actionPresentation">
+   <property name="text">
+    <string>Presentation</string>
+   </property>
+  </action>
+  <action name="actionTmp">
+   <property name="text">
+    <string>tmp</string>
+   </property>
+  </action>
+  <action name="actionexportPPT">
+   <property name="text">
+    <string>내보내기(to *.ppt)</string>
+   </property>
+  </action>
+  <action name="actionimportPPT">
+   <property name="text">
+    <string>가져오기(from *.PPT)</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -234,7 +276,7 @@
    <slot>updateWeb()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>306</x>
+     <x>769</x>
      <y>265</y>
     </hint>
     <hint type="destinationlabel">
@@ -243,10 +285,129 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionexportPPT</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>exportPPT()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionimportPPT</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>importPPT()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDisplay</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>displayFullScreen()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionGithub</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>setTemplateGithub()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDracula</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>setTemplateDracula()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionPresentation</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>setTemplatePresentation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTmp</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>setTemplateTmp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openFile()</slot>
   <slot>saveFile()</slot>
   <slot>updatePreview()</slot>
+  <slot>exportPPT()</slot>
+  <slot>importPPT()</slot>
+  <slot>displayFullScreen()</slot>
+  <slot>setTemplateGithub()</slot>
+  <slot>setTemplatePresentation()</slot>
+  <slot>setTemplateTmp()</slot>
+  <slot>setTemplateDracula()</slot>
  </slots>
 </ui>
