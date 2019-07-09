@@ -1,0 +1,72 @@
+색깔
+blue b 
+green g 
+red r 
+cyan c 
+magenta m 
+yellow y 
+black k 
+white w 
+
+마커
+. point marker 
+, pixel marker 
+o circle marker 
+v triangle_down marker 
+^ triangle_up marker 
+< triangle_left marker 
+> triangle_right marker 
+1 tri_down marker 
+2 tri_up marker 
+3 tri_left marker 
+4 tri_right marker 
+s square marker 
+p pentagon marker 
+* star marker 
+h hexagon1 marker 
+H hexagon2 marker 
++ plus marker 
+x x marker 
+D diamond marker 
+d thin_diamond marker 
+
+선 스타일
+- solid line style 
+-- dashed line style 
+-. dash-dot line style 
+: dotted line style 
+
+기타 스타일
+color c 선 색깔 
+linewidth lw 선 굵기 
+linestyle ls 선 스타일 
+marker  마커 종류 
+markersize ms 마커 크기 
+markeredgecolor mec 마커 선 색깔 
+markeredgewidth mew 마커 선 굵기 
+markerfacecolor mfc 마커 내부 색깔 
+
+범례
+best 0 
+upper right 1 
+upper left 2 
+lower left 3 
+lower right 4 
+right 5 
+center left 6 
+center right 7 
+lower center 8 
+upper center 9 
+center 10 
+
+
+
+
+
+
+
+
+
+
+
+
