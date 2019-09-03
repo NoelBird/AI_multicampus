@@ -1,0 +1,5 @@
+venv/
+pandas.pdf
+data/
+.idea/
+.ipynb_checkpoints/
