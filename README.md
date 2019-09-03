@@ -12,7 +12,7 @@
    - VM, 네트워크 기초, SQL, Azure AD, Container(Docker, k8s), Serverless 등
 2. [**데이터 시각화 및 기초 통계(R)**](./2-R_DataPreProcessing/README.md)
    - 공분산, 상관계수, DataFrame 조작법, dplyr, 문자 빈도 분석(TF-IDF), 시각화(ggplot2) 등
-3. [**컴퓨터 비젼(Python)**](./3-Python_DataPreProcessing/README.md)
+3. [**컴퓨터 비젼(Python)**](./3-ComputerVision/README.md)
    - 환경설정(Ubuntu, RHEL, Windows Server on VirtualBox, DB연결), 선형대수, OpenCV, GUI(Tkinter), Object Detection 등
 4. [**데이터 전처리 및 시각화(Python)**](./4-Python_DataPreProcessing/README.md)
    - numpy 연습, DataFrame 조작, 정규화/표준화, 원핫 인코딩, 시각화(matplotlib, seaborn 활용) 등
