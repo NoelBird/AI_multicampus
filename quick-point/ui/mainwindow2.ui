@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>846</width>
+    <height>619</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Quick Point</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>800</width>
+     <height>559</height>
+    </size>
+   </property>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>791</width>
+      <height>551</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,2">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
+     <item>
+      <widget class="QWebEngineView" name="wgtWeb" native="true">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="txtMarkdown"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>846</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>파일</string>
+    </property>
+    <addaction name="actionopen"/>
+    <addaction name="actionsave"/>
+    <addaction name="actionimportPPT"/>
+    <addaction name="actionexportPPT"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>화면모드</string>
+    </property>
+    <addaction name="actionEdit"/>
+    <addaction name="actionDisplay"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>이미지</string>
+    </property>
+    <widget class="QMenu" name="menucolor">
+     <property name="title">
+      <string>color</string>
+     </property>
+     <addaction name="actionadd"/>
+    </widget>
+    <addaction name="actionresize"/>
+    <addaction name="actioncrop"/>
+    <addaction name="menucolor"/>
+    <addaction name="actionstretch"/>
+    <addaction name="actionrotate"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>템플릿</string>
+    </property>
+    <addaction name="actionGithub"/>
+    <addaction name="actionDracula"/>
+    <addaction name="actionPresentation"/>
+    <addaction name="actionTmp"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_4"/>
+   <addaction name="menu_3"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionopen">
+   <property name="text">
+    <string>열기(&amp;O)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionsave">
+   <property name="text">
+    <string>저장(&amp;S)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>종료(&amp;X)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionEdit">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>수정모드</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionDisplay">
+   <property name="text">
+    <string>보기모드(전체화면)</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionresize">
+   <property name="text">
+    <string>resize</string>
+   </property>
+  </action>
+  <action name="actioncrop">
+   <property name="text">
+    <string>crop</string>
+   </property>
+  </action>
+  <action name="actionadd">
+   <property name="text">
+    <string>RGB</string>
+   </property>
+  </action>
+  <action name="actionstretch">
+   <property name="text">
+    <string>stretch</string>
+   </property>
+  </action>
+  <action name="actionrotate">
+   <property name="text">
+    <string>rotate</string>
+   </property>
+  </action>
+  <action name="actionGithub">
+   <property name="text">
+    <string>Github</string>
+   </property>
+  </action>
+  <action name="actionDracula">
+   <property name="text">
+    <string>Dracula</string>
+   </property>
+  </action>
+  <action name="actionPresentation">
+   <property name="text">
+    <string>Presentation</string>
+   </property>
+  </action>
+  <action name="actionTmp">
+   <property name="text">
+    <string>tmp</string>
+   </property>
+  </action>
+  <action name="actionexportPPT">
+   <property name="text">
+    <string>내보내기(to *.ppt)</string>
+   </property>
+  </action>
+  <action name="actionimportPPT">
+   <property name="text">
+    <string>가져오기(from *.PPT)</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header>PyQt5.QtWebEngineWidgets</header>
+   <container>1</container>
+   <slots>
+    <slot>updateWeb()</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionopen</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>openFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionsave</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>saveFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtMarkdown</sender>
+   <signal>textChanged()</signal>
+   <receiver>wgtWeb</receiver>
+   <slot>updateWeb()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>769</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>506</x>
+     <y>266</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionexportPPT</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>exportPPT()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionimportPPT</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>importPPT()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDisplay</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>displayFullScreen()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionGithub</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>setTemplateGithub()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDracula</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>setTemplateDracula()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionPresentation</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>setTemplatePresentation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTmp</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>setTemplateTmp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>openFile()</slot>
+  <slot>saveFile()</slot>
+  <slot>updatePreview()</slot>
+  <slot>exportPPT()</slot>
+  <slot>importPPT()</slot>
+  <slot>displayFullScreen()</slot>
+  <slot>setTemplateGithub()</slot>
+  <slot>setTemplatePresentation()</slot>
+  <slot>setTemplateTmp()</slot>
+  <slot>setTemplateDracula()</slot>
+ </slots>
+</ui>
