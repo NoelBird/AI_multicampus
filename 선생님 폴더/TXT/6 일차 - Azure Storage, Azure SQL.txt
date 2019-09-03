@@ -1,0 +1,101 @@
+6 일차 - Azure Storage, Azure SQL
+	10979 Module 6, 20533 Module 6
+
+technet.microsoft.com
+https://technet.microsoft.com/en-us
+https://www.microsoft.com/ko-kr/evalcenter/
+
+
+기본 방화벽 (firewall.cpl), 고급 방화벽 (wf.msc)
+	해당 서비스를 설치 하면 방화벽이 자동 오픈 (Windows 2008이상)
+
+공유 설정 : 
+	UNC 경로 :  \\IP_Address\Share_Name 
+		   \\Computer_Name\Share_Name
+		   \\DNS_Name\Share_Name
+
+     관리자 암호가 부여 되어 있지 않으면 접근 불가. ( Windows 10)
+	
+gpedit.msc   : Local 정책을 확인
+
+20533 Github
+https://github.com/MicrosoftLearning/20533-ImplementingMicrosoftAzureInfrastructureSolutions
+
+============================
+NSG - Ping VM으로 오픈 하기 
+
+You can get ping inbound by allowing port 0 in a NSG rule.
+
+Connect-AzureRMAccount
+Get-AzureRMSubscription
+Select-AzureRMSubscription -Subscription <Subscription ID>
+
+Get-AzureRmNetworkSecurityGroup -Name "<<nsgName>>" -ResourceGroupName "<<GroupName>>" | 
+    Add-AzureRmNetworkSecurityRuleConfig -Name "AllowPing" -Description "Allow Ping" -Access `
+    "Allow" -Protocol "*" -Direction "Inbound" -Priority 4002 -SourceAddressPrefix `
+    "*" -SourcePortRange "*" -DestinationAddressPrefix "*" -DestinationPortRange "0" |
+    Set-AzureRmNetworkSecurityGroup
+
+
+참고 ) NSG Priority 허용 범위 : Allowed range 100-4096
+
+=====================
+
+ MS-SQL 
+---------------------------------------
+create database myDB01;
+go
+
+create database myDB02;
+go
+
+use myDB01
+
+Create table MyTbl (
+  idx int not null
+  ,name char(10) not null
+  ,phone varchar(50) null
+  ,email varchar(100) null
+  ,addr varchar(200) null)
+
+Select * from MyTbl
+
+
+insert into MyTbl (idx,name,phone,email,addr)
+values (1,'김똘똘','111-1111-1111',
+'aaa@aaa.com','서울')
+insert into MyTbl (idx,name,phone,email,addr)
+values (2,'김똘순','111-1111-2222',
+'bbb@bbb.com','부산')
+---------------------------------
+
+VM의 방화벽 
+    TCP 1433 
+
+NSG 의 방화벽 
+   TCP 1433
+
+SQL Server의 인증 모드 
+	- Windows 인증  (같은 도메인 환경일 때 사용 ), 보안이 강함, 중앙에서 관리
+	- 혼합 인증 (Windows 인증 + MS SQL Server 인증)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
