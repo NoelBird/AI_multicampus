@@ -4,7 +4,7 @@
 
 과정 개요: 빅데이터 활용 AI 설계
 
-> 클라우드(Azure) 구축 및 활용 > 빅데이터 기획/분석 > 빅데이터 활용 : 머신러닝/딥러닝
+> 클라우드(Azure) 구축 및 활용 > 빅데이터 기획/분석 > 빅데이터 활용 : 머신러닝/딥러닝 > 웹
 
 
 
@@ -20,5 +20,11 @@
    - 다중 선형 분류/회기, 로지스틱 분류/회기, 소프트맥스, Decision Tree, Random Forest, SVM, 차원축소(PCA), apriori
 6. [**딥러닝 이해와 구현, 자연어 처리(Scikit-Learn, Keras, Tensorflow)**](./6-DeepLearning_NLP)
    - CNN, RNN(LSTM, 양방향 LSTM, GRU), 워드 임베딩, 원 핫 인코딩
-7. 종합 설계
-8. 특강(github, Agile 방법론, 취업특강)
+7. [**강화 학습**](./7-RL)
+8. [**웹(django, flask)**](./8-Web)
+9. 특강(github, Agile 방법론, 취업 특강)
+   - github 특강
+   - Agile 방법론
+   - 취업 특강
+10. 프로젝트
+   - [**PC 조립 헬퍼(yolo v3)**](./10-Project)
