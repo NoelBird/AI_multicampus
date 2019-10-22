@@ -1,0 +1,56 @@
+.box {
+    position: relative;
+    border: 1px solid black;
+    width: 200px;
+    height: 200px;
+}
+
+.box1 {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    /* border: 1px solid black; */
+    background-color: pink;
+    /* top: 10px;
+    left: 10px; */
+}
+
+.box2 {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    /* border: 1px solid black; */
+    background-color: blue;
+    top: 40px;
+    left: 40px;
+}
+
+.box3 {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    /* border: 1px solid black; */
+    background-color: green;
+    top: 80px;
+    left: 80px;
+}
+
+.box4 {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    /* border: 1px solid black; */
+    background-color: red;
+    bottom: 0px;
+    right: 0px;
+}
+
+.box5 {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    /* border: 1px solid black; */
+    background-color: yellow;
+    left: 240px;
+    top: 240px;
+}

@@ -1,0 +1,45 @@
+p, h3 {
+    color: blue;
+}
+
+div {
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;;
+}
+
+/* 인접 선택자, 바로 붙어있는 */
+/* red와 blue와 바로 붙어있는 div에다가 적용 */
+.red + .blue + div { 
+    background-color: purple;
+}
+
+ol > li {
+    color: darkgreen;
+}
+
+ol#chocolate > li{
+    color: chocolate;
+}
+
+/* ul 밑에 있는 li를 선택하는데, 중간에 div가 있더라도 선택이 됩니다. */
+ul li {
+    color: lime;
+}
+
+/* mulcam이라는 id의 2번째 child가 p태그일 때 적용 해 */
+#mulcam > p:nth-child(2){
+    color: red;
+}
+
+#mulcam > p:nth-of-type(2){
+    color: green;
+}

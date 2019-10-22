@@ -1,0 +1,29 @@
+.square {
+    width: 100px;
+    height: 100px;
+    background: darkgray;
+    position: relative;
+}
+
+.relative-box {
+    /* relative는 static일 때의 기준으로 움직임 */
+    position: relative;
+    background: navy;
+    top: 10px;
+    left: 10px;
+}
+
+.absolute-box {
+    /* absolute는 부모가 static이 아닌 부모를 찾아서 움직임 */
+    position: absolute;
+    background: red;
+    top: 30px;
+    left: 30px;
+}
+
+.square2 {
+    width: 100px;
+    height: 100px;
+    background: darkgray;
+    position: static;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="04.css">
+</head>
+<body>
+    <!-- 기본적으로 width는 부모의 영향을 받는다. -->
+    <div>
+        <p>100%</p>
+    </div>
+    <!-- 개발자 도구에서 파란색이 넓이, 주황색이 마진을 나타냅니다. -->
+    <div style="width: 50%;">
+        <p>안녕? 50%</p>
+    </div>
+
+    <div class="square">
+        <p>컨텐츠 영역 100*100</p>
+    </div>
+
+    <div class="square padding-10">
+        <p>100*100 padding 10</p>
+    </div>
+
+    <div class="square padding-10 border-box">
+        <p>100*100 (padding 10)</p>
+    </div>
+
+    <!-- 패딩은 내부적으로 공간을 주고 싶을 때 -->
+    <div class="square margin-100">
+        <p>100*100 (margin 100)</p>
+    </div>
+
+    <div class="square circle">
+        
+    </div>
+</body>
+</html>
