@@ -22,7 +22,7 @@
    - CNN, RNN(LSTM, 양방향 LSTM, GRU), 워드 임베딩, 원 핫 인코딩
 7. [**강화 학습**](./7-RL)
 8. [**웹(django, flask)**](./8-Web)
-9. 특강(github, Agile 방법론, 취업 특강)
+9. [**특강(github, Agile 방법론, 취업 특강)**](./9-Special_lecture)
    - github 특강
    - Agile 방법론
    - 취업 특강
