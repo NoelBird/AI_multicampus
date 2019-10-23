@@ -1,0 +1,2 @@
+- [telegram chatbot](../8-Web/3일차/2019-10-23_telegram_chatbot.md)
+   - 특강 + 웹 강의 때의 chatbot 내용이 통합되어 있습니다.

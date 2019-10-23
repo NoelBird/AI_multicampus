@@ -1,1 +1,4 @@
 venv/
+telegramChatbot-c7dec3040726.json
+*.pyc
+.env
