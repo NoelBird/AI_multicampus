@@ -20,7 +20,13 @@ from pages import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.index),
-    path('introduce/', views.introduce),
+    path('introduce/<str:name>/<int:age>/', views.introduce),
     path('dinner/', views.dinner),
     path('image/', views.image),
+    path('hello/<str:name>/', views.hello),
+    path('times/<int:num1>/<int:num2>', views.times),
+    path('area/<int:radius>/', views.area),
+    path('template_language/', views.template_language),
+    path('check_mybirth/', views.check_mybirth),
+    path('check_palindrom/<str:str_pal>/', views.check_palindrom)
 ]

@@ -7,7 +7,12 @@
     <title>Document</title>
 </head>
 <body>
-    😄안녕하세요 {{name}}입니다 {{age}}😄
+    <p>{{str_pal}}은<br></p>
 
+    {% if is_pal == True %}
+        <p>회문 문자열입니다.</p>
+    {% else %}
+        <p>회문 문자열이 아닙니다.</p>
+    {% endif %}
 </body>
 </html>

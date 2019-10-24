@@ -7,7 +7,12 @@
     <title>Document</title>
 </head>
 <body>
-    😄안녕하세요 {{name}}입니다 {{age}}😄
-
+    {% now 'm' as current_month %}
+    {% now 'd' as current_day %}
+    {% if current_month == '2' and current_day == '28' %}
+    예
+    {% else %}
+    아니요
+    {% endif %}
 </body>
 </html>
