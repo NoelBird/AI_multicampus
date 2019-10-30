@@ -6,3 +6,4 @@
 - [4일차 - django intro](4일차/2019-10-24_django_introduction.md)
 - [5일차 - post로 데이터 주고 받기, DTL(static, extends)](5일차/2019-10-28.md)
 - [6일차 - ORM & CRUD](6일차/2019-10-29_CRUD.md)
+- [7일차 - REST](7일차/2019-10-30_REST.md)
