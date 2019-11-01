@@ -18,6 +18,6 @@
 
 ## GAN(Generative Adverserial Network)
 
-- [9일차 - GAN 논문](10일차/2019-10-16_gan논문.md)
-- [10일차 - GAN 기초](10일차/GAN_BASIC.ipynb)
+- [10일차 - GAN 논문](10일차/2019-10-16_gan논문.md)
+- [11일차 - GAN 기초](11일차/GAN_BASIC.ipynb)
 
