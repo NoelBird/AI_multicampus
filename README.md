@@ -20,11 +20,12 @@
    - 다중 선형 분류/회기, 로지스틱 분류/회기, 소프트맥스, Decision Tree, Random Forest, SVM, 차원축소(PCA), apriori
 6. [**딥러닝 이해와 구현, 자연어 처리(Scikit-Learn, Keras, Tensorflow)**](./6-DeepLearning_NLP)
    - CNN, RNN(LSTM, 양방향 LSTM, GRU), 워드 임베딩, 원 핫 인코딩
-7. [**강화 학습**](./7-RL)
+7. [**강화 학습, GAN**](./7-RL_and_GAN)
 8. [**웹(django, flask)**](./8-Web)
 9. [**특강(github, Agile 방법론, 취업 특강)**](./9-Special_lecture)
    - github 특강
    - Agile 방법론
    - 취업 특강
+   - [프로젝트 특강](./9-Special_lecture/about_project/2019-09-24(특강).md)
 10. 프로젝트
    - [**PC 조립 헬퍼(yolo v3)**](./10-Project/PC조립%20헬퍼%20최종본.pdf)
