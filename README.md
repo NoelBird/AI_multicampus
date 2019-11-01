@@ -1,4 +1,4 @@
-# AI-설계 교육 정리 :trumpet: :musical_note:
+﻿# AI-설계 교육 정리 :trumpet: :musical_note:
 
 교육 기간(2019. 04. 22 ~ 2019. 11. 27, 월 ~ 금 09:00 ~ 18:00)
 
@@ -27,4 +27,4 @@
    - Agile 방법론
    - 취업 특강
 10. 프로젝트
-   - [**PC 조립 헬퍼(yolo v3)**](./10-Project)
+   - [**PC 조립 헬퍼(yolo v3)**](./10-Project/PC조립%20헬퍼%20최종본.pdf)
