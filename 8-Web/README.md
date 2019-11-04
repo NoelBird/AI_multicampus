@@ -13,4 +13,5 @@
 - [7일차 - REST](7일차/2019-10-30_REST.md)
 - [8일차 - one to many(1:N)](8일차/2019-10-31_db_FK.md)
 - [9일차 - 종합 프로젝트 실습](9일차/2019-11-01.md)
+- [10일차 - Static File(css, html, image) Serve/Upload](10일차/2019-11-04_STATIC_FILE.md)
 
