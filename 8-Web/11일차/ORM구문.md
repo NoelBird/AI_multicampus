@@ -256,7 +256,7 @@ user.delete()
    ```python
    # orm
    from django.db.models import Avg
-   User.objects.all().aggregate(Avg('age'))
+   User.objects.aggregate(Avg('age'))
    ```
 
       ```sql
