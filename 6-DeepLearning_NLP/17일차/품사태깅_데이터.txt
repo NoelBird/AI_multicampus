@@ -1,0 +1,7 @@
+https://raw.githubusercontent.com/Franck-Dernoncourt/NeuroNER/master/neuroner/data/conll2003/en/train.txt
+- train.txt 데이터
+
+
+https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
+
+- 품사 태깅 정보

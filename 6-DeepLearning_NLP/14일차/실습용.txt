@@ -1,0 +1,17 @@
+1. word2vec 실습용
+corpus = ['king is a strong man', 
+          'queen is a wise woman', 
+          'boy is a young man',
+          'girl is a young woman',
+          'prince is a young king',
+          'princess is a young queen',
+          'man is strong', 
+          'woman is pretty',
+          'prince is a boy will be king',
+          'princess is a girl will be queen']
+
+
+2. 장문 학습(LSTM)
+sentence = ("The regret after not doing something is bigger than that of doing something "
+            "Ability is decided by one's own effort "
+            "The difficulty in life is the choice.")
