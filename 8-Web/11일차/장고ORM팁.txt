@@ -1,0 +1,14 @@
+장고 ORM
+2019-11-05
+
+aggregate는 전체 계산 값에서 계산값
+annotate는 각각의 레코드에 대해서 계산을 한 후 필드 값을 추가한 값
+
+부트스트랩 striped
+찬 만큼이 스타일의 width로 넣으면 됨 퍼센트로 됨
+
+
+from django.db.models import Q
+User.objects.filter(
+Q(age=30) | Q(last_name="김")
+)

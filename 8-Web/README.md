@@ -15,4 +15,5 @@
 - [9일차 - 종합 프로젝트 실습](9일차/2019-11-01.md)
 - [10일차 - Static File(css, html, image) Serve/Upload](10일차/2019-11-04_STATIC_FILE.md)
 - [11일차 - ORM연습 & 미니 프로젝트](11일차/2019-11-05_ORM연습.md)
+- [12일차 - 장고 Form](12일차/2019-11-06_django_form.md)
 
