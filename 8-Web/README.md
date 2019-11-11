@@ -16,4 +16,7 @@
 - [10일차 - Static File(css, html, image) Serve/Upload](10일차/2019-11-04_STATIC_FILE.md)
 - [11일차 - ORM연습 & 미니 프로젝트](11일차/2019-11-05_ORM연습.md)
 - [12일차 - 장고 Form](12일차/2019-11-06_django_form.md)
+- [13일차 - 장고 Form with bootstrap](13일차/2019-11-07_django_form_bootstrap.md)
+- [14일차 - 장고 Auth](14일차/2019-11-11_auth.md)
+
 
