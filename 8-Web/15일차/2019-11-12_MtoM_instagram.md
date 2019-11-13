@@ -1,4 +1,4 @@
-## Gravatar 이용해서 이미지 달기
+﻿## Gravatar 이용해서 이미지 달기
 
 gravatar에 들어가서 가입을 하고, 개발자 리소스로 들어가면 해쉬 값을 요청을 합니다.
 
@@ -582,4 +582,12 @@ urlpatterns = [
 
 
 ![image-20191112162239808](2019-11-12.assets/image-20191112162239808.png)
+
+
+### tip
+
+sqlite3 익스텐션 설치하면 편리하게 sqlite3 볼 수 있음
+
+sqlite open database > 지금 내가 사용하고 있는 파일 선택 > 왼쪽 아래에서 sqlite explorer > 보고 싶은 테이블 선택
+
 
