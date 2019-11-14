@@ -20,5 +20,5 @@
 - [14일차 - 장고 Auth](14일차/2019-11-11_auth.md)
 - [15일차 - M:N, instagram의 좋아요 기능 구현](15일차/2019-11-12_MtoM_instagram.md)
 - [16일차 - 장고 마무리](16일차/2019-11-13_final.md)
-
+- [17일차 - javascript 기초](17일차/2019-11-14_js_fundamental.md)
 
