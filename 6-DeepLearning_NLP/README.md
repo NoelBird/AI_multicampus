@@ -20,7 +20,7 @@ Overview
 - [8일차 - LSTM(Long Short Term Memory)](8일차/2019-08-16_LSTM.md)
 - [9일차 - CNN & RNN](9일차/2019-08-19_CNN_RNN.ipynb)
 - [10일차 - 파이썬 복습(Generator, Iterator)](10일차/2019-08-20_GEN_ITER.ipynb)
-- [11일차 - MNIST with RNN](11일차/2019-08-21_MNIST RNN.ipynb)
+- [11일차 - MNIST with RNN](11일차/2019-08-21_MNIST%20RNN.ipynb)
 - [12일차 - Apriori 알고리즘](12일차/2019-08-22_APRIORI.ipynb)
 - [13일차 - Word2Vec](13일차/2019-08-23_Word2Vec.ipynb)
 - [14일차 - Word2Vec(c-bow, skip gram)](14일차/2019-08-26_Word2Vec(cbow_skip_gram).md)

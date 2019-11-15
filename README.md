@@ -8,6 +8,8 @@
 
 
 
+## 내용
+
 1. [**클라우드 구축(MS Azure)**](./1-Azure/README.md) 
    - VM, 네트워크 기초, SQL, Azure AD, Container(Docker, k8s), Serverless 등
 2. [**데이터 시각화 및 기초 통계(R)**](./2-R_DataPreProcessing/README.md)
@@ -29,3 +31,11 @@
    - [프로젝트 특강](./9-Special_lecture/about_project/2019-09-24(특강).md)
 10. 프로젝트
    - [**PC 조립 헬퍼(yolo v3)**](./10-Project/PC조립%20헬퍼%20최종본.pdf)
+
+
+
+## 정리현황
+
+- Done: 클라우드 구축, 데이터 시각화 및 기초 통계, 딥러닝 이해와 구현 자연어 처리, 강화학습
+- TODO: else
+- 퀄리티 높은 강의: 클라우드 구축, 컴퓨터 비전(업데이트 예정), 웹
